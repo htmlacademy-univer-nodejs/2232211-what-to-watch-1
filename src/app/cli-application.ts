@@ -2,7 +2,7 @@ import { ICommand } from './commands/command.interface.js';
 
 type ParsedCommands = Record<string, string[]>;
 
-export default class CLIApplication {
+export default class CliApplication {
   private readonly defaultCommand = '--help';
   private readonly commands: Record<string, ICommand>;
 

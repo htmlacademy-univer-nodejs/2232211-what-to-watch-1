@@ -1,10 +1,10 @@
 import { ICommand } from './command.interface.js';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 
 export default class HelpCommand implements ICommand {
   readonly commandName = '--help';
 
-  execute(): void {
+  execute(): Promise<void> {
     console.log(`
         Программа для подготовки данных для REST API сервера.
         Пример:
@@ -13,7 +13,9 @@ export default class HelpCommand implements ICommand {
             ${chalk.green('--version:')}                  # выводит номер версии
             ${chalk.green('--help:')}                     # печатает этот текст
             ${chalk.green('--import <path>:')}            # импортирует данные из TSV
+            ${chalk.green('--generate <n> <filepath> <url>')}
         `);
-  }
 
+    return Promise.resolve();
+  }
 }

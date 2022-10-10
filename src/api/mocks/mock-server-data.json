@@ -1,0 +1,92 @@
+{
+  "api": {
+    "titles": [
+      "Title1",
+      "Title2",
+      "Title3",
+      "Title4",
+      "Title5"
+    ],
+    "descriptions": [
+      "Description1",
+      "Description2",
+      "Description3",
+      "Description4",
+      "Description5"
+    ],
+    "moviePreviewLinks": [
+      "movie1",
+      "movie2",
+      "movie3",
+      "movie4",
+      "movie5"
+    ],
+    "movieLinks": [
+      "movie1",
+      "movie2",
+      "movie3",
+      "movie4",
+      "movie5"
+    ],
+    "actors": [
+      "Actor1",
+      "Actor2",
+      "Actor3",
+      "Actor4",
+      "Actor5",
+      "Actor6",
+      "Actor7",
+      "Actor8",
+      "Actor9"
+    ],
+    "producers": [
+      "Producer1",
+      "Producer2",
+      "Producer3",
+      "Producer4",
+      "Producer5"
+    ],
+    "users": [
+      "User1",
+      "User2",
+      "User3",
+      "User4",
+      "User5"
+    ],
+    "emails": [
+      "n1@test.email",
+      "n2@test.email",
+      "n3@test.email",
+      "n4@test.email",
+      "n5@test.email"
+    ],
+    "avatarLinks": [
+      "avatar1.jpg",
+      "avatar2.jpg",
+      "avatar3.jpg",
+      "avatar4.jpg",
+      "avatar5.jpg"
+    ],
+    "posterLinks": [
+      "poster1",
+      "poster2",
+      "poster3",
+      "poster4",
+      "poster5"
+    ],
+    "backgroundImageLinks": [
+      "background1",
+      "background2",
+      "background3",
+      "background4",
+      "background5"
+    ],
+    "backgroundColors": [
+      "color1",
+      "color2",
+      "color3",
+      "color4",
+      "color5"
+    ]
+  }
+}
