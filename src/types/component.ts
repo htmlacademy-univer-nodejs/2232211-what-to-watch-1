@@ -4,6 +4,8 @@ export const Component = {
   IConfig: Symbol.for('IConfig'),
   IDatabase: Symbol.for('IDatabase'),
   IUserService: Symbol.for('IUserService'),
+  IMovieService: Symbol.for('IMovieService'),
 
   UserModel: Symbol.for('UserModel'),
+  MovieModel: Symbol.for('MovieModel'),
 } as const;
