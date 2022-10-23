@@ -41,10 +41,12 @@
   },
   "type": "module",
   "dependencies": {
+    "@typegoose/typegoose": "9.12.1",
     "dayjs": "1.11.5",
     "dotenv": "16.0.3",
     "got": "12.5.1",
     "inversify": "6.0.1",
+    "mongoose": "6.6.7",
     "pino": "8.6.1",
     "reflect-metadata": "0.1.13"
   }
