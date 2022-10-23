@@ -1,6 +1,8 @@
-import { prop, defaultClasses, modelOptions, Ref, getModelForClass } from '@typegoose/typegoose';
+import typegoose, { defaultClasses, Ref, getModelForClass } from '@typegoose/typegoose';
 import { Genre, Genres } from '../../models/genre.js';
 import { UserEntity } from '../user/user.entity.js';
+
+const { prop, modelOptions } = typegoose;
 
 export interface MovieEntity extends defaultClasses.Base {}
 

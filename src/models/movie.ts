@@ -1,4 +1,5 @@
 import { Genre } from './genre.js';
+import { User } from './user.js';
 
 export type Movie = {
   title: string;
@@ -13,7 +14,7 @@ export type Movie = {
   producer: string;
   durationInMinutes: number;
   commentsCount: number;
-  user: string;
+  user: User;
   posterLink: string;
   backgroundImageLink: string;
   backgroundColor: string;

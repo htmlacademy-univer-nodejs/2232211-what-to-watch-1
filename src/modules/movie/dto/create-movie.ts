@@ -13,7 +13,7 @@ export default class CreateMovieDto {
   producer!: string;
   durationInMinutes!: number;
   commentsCount!: number;
-  user!: string;
+  userId!: string;
   posterLink!: string;
   backgroundImageLink!: string;
   backgroundColor!: string;
