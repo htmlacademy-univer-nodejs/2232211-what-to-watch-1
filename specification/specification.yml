@@ -1,0 +1,779 @@
+openapi: 3.0.3
+info:
+  title: API server of the «What to Watch» project
+  description: «What to Watch» server paths and schemas
+  version: 1.0.0
+tags:
+  - name: movies
+  - name: comments
+  - name: users
+
+paths:
+  /movies:
+    get:
+      tags:
+        - movies
+      summary: Movies list
+      description: Return array of movies up to 60 items
+
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            example: 10
+
+        - in: query
+          name: genre
+          schema:
+            type: string
+            enum: [ comedy, crime, documentary, drama, horror, family, romance, scifi, thriller ]
+            example: drama
+
+      responses:
+        "200":
+          description: Movies array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/movieListItem'
+
+        "400":
+          description: Can't handle the request
+
+    post:
+      tags:
+        - movies
+      summary: Upload new movie
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createMovie'
+        required: true
+
+      responses:
+        "201":
+          description: The movie is loaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/movie'
+
+        "400":
+          description: Can't handle the request
+
+  /movies/{id}:
+    get:
+      tags:
+        - movies
+      summary: Movie information
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+
+      responses:
+        "200":
+          description: Movie information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/movie'
+
+        "404":
+          description: Movie with that id was not found
+
+    patch:
+      tags:
+        - movies
+      summary: Update movie information
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Movie id to update.
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateMovie'
+        required: true
+
+      responses:
+        "200":
+          description: Movie patched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/movie'
+
+        "400":
+          description: Can't handle the request
+
+        "404":
+          description: Movie with that id was not found
+
+    delete:
+      tags:
+        - movies
+      summary: Delete movie
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Movie id to delete.
+
+      requestBody:
+        description: User identifier
+        content:
+          application/json:
+            schema:
+              type: object
+
+              properties:
+                userId:
+                  type: string
+                  format: uuid
+
+      responses:
+        "204":
+          description: The movie successfully deleted
+
+        "400":
+          description: Can't handle the request
+
+        "403":
+          description: User with that id haven't enough permissions to delete this movie
+
+        "404":
+          description: Movie with that id was not found
+
+  /promo:
+    get:
+      tags:
+        - movies
+      summary: Promo movie
+
+      responses:
+        "200":
+          description: Promo movie information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/movie'
+
+  /favorite:
+    get:
+      tags:
+        - movies
+      summary: Favorite movies list
+
+      requestBody:
+        description: User identifier
+        content:
+          application/json:
+            schema:
+              type: object
+
+              properties:
+                userId:
+                  type: string
+                  format: uuid
+
+              required:
+                - userId
+
+      responses:
+        "200":
+          description: Favorite movies list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/movieListItem'
+
+        "401":
+          description: User is not authorized
+
+    post:
+      tags:
+        - movies
+      summary: Add movie in favourite's list
+
+      requestBody:
+        description: User identifier and movie identifier
+        content:
+          application/json:
+            schema:
+              type: object
+
+              properties:
+                userId:
+                  type: string
+                  format: uuid
+                  example: 82fe1788-b388-4001-9efd-8f2095842b31
+
+                id:
+                  type: string
+                  format: uuid
+                  example: 07841e76-59a4-4eb4-9638-cc4e6d458b4d
+
+              required:
+                - userId
+                - id
+
+      responses:
+        "201":
+          description: Movie is in favourite's list
+
+        "401":
+          description: User is not authorized
+
+
+    delete:
+      tags:
+        - movies
+      summary: Remove movie from favorite's list
+
+      requestBody:
+        description: User identifier and movie identifier
+        content:
+          application/json:
+            schema:
+              type: object
+
+              properties:
+                userId:
+                  type: string
+                  format: uuid
+                  example: 82fe1788-b388-4001-9efd-8f2095842b31
+
+                id:
+                  type: string
+                  format: uuid
+                  example: 07841e76-59a4-4eb4-9638-cc4e6d458b4d
+
+              required:
+                - userId
+                - id
+
+      responses:
+        "204":
+          description: Movie is not in favourite's list
+
+        "401":
+          description: User is not authorized
+
+  /comments:
+    post:
+      tags:
+        - comments
+      summary: Add new comment to movie
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/comment'
+                - type: object
+                  properties:
+                    movieId:
+                      type: string
+                      format: uuid
+                      example: 07841e76-59a4-4eb4-9638-cc4e6d458b4d
+                  required:
+                    - movieId
+
+      responses:
+        "200":
+          description: Add new comment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/comment'
+
+        "400":
+          description: Can't handle the request
+
+        "401":
+          description: User is not authorized
+
+        "404":
+          description: Can't find movie with that id
+
+  /comments/{movieId}:
+    get:
+      tags:
+        - comments
+      summary: Movie's comments list
+
+      parameters:
+        - in: path
+          name: movieId
+          schema:
+            type: string
+            format: uuid
+          required: true
+
+      responses:
+        "200":
+          description: Movie's comments list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/comment'
+
+        "404":
+          description: Can't find movie with that id
+
+  /users:
+    post:
+      tags:
+        - users
+      summary: Add new user
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/user'
+                - type: object
+                  properties:
+                    nickname:
+                      type: string
+                      example: Dmitrii
+                  required:
+                    - nickname
+        required: true
+
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "409":
+          description: User with that id is already exists
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Authorize user by login and password
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+
+              properties:
+                login:
+                  type: string
+                  example: your@mail.here
+
+                password:
+                  type: string
+                  example: admin
+
+      responses:
+        "200":
+          description: >
+            Successfully authorized
+            See your authorization token with name `SESSIONID` in cookies storage.
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: SESSIONID=adminadmin; Path=/; HttpOnly
+
+        "403":
+          description: Incorrect login or password
+
+    get:
+      tags:
+        - users
+      summary: User authorization status
+
+      parameters:
+        - in: cookie
+          name: SESSIONID
+          required: true
+          schema:
+            type: string
+
+      responses:
+        "200":
+          description: User authorization status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+  /users/logout:
+    delete:
+      tags:
+        - users
+      summary: Logout
+
+      parameters:
+        - in: cookie
+          name: SESSIONID
+          required: true
+          schema:
+            type: string
+
+      responses:
+        "204":
+          description: Success
+
+        "403":
+          description: Incorrect SESSIONID value
+
+components:
+  schemas:
+    createMovie:
+      type: object
+
+      properties:
+        title:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: Movie title
+
+        description:
+          type: string
+          minLength: 20
+          maxLength: 1024
+          example: Movie description
+
+        publicationDate:
+          type: string
+          format: date-time
+          example: 2022-10-30T21:30:00.000Z
+
+        genre:
+          type: string
+          enum: [ comedy, crime, documentary, drama, horror, family, romance, scifi, thriller ]
+          example: drama
+
+        releaseYear:
+          type: integer
+          minimum: 1895
+          maximum: 2022
+          example: 2022
+
+        rating:
+          type: number
+          minimum: 0
+          maximum: 10
+          example: 6.2
+
+        moviePreviewLink:
+          type: string
+          format: url
+          example: https://example.com
+
+        movieLink:
+          type: string
+          format: url
+          example: https://example.com
+
+        actors:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          example: [ First actor, Second actor, Third actor ]
+          uniqueItems: true
+
+        producer:
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Movie producer
+
+        durationInMinutes:
+          type: number
+          minimum: 0.1
+          example: 60
+
+        commentsCount:
+          type: integer
+          minimum: 0
+          example: 10
+
+        posterLink:
+          type: string
+          format: uri
+          pattern: ([^\s]+(\.jpg)$)
+          example: movie_poster.jpg
+
+        backgroundImageLink:
+          type: string
+          format: uri
+          pattern: ([^\s]+(\.jpg)$)
+          example: movie_bg.jpg
+
+        backgroundColor:
+          type: string
+          example: gray
+
+        userId:
+          type: string
+          format: uuid
+          example: 07841e76-59a4-4eb4-9638-cc4e6d458b4d
+
+      required:
+        - title
+        - description
+        - publishingDate
+        - genre
+        - releaseYear
+        - previewPath
+        - moviePath
+        - actors
+        - director
+        - durationInMinutes
+        - userId
+        - posterPath
+        - backgroundImagePath
+        - backgroundColor
+
+    movie:
+      type: object
+
+      properties:
+        title:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: Movie title
+
+        description:
+          type: string
+          minLength: 20
+          maxLength: 1024
+          example: Movie description
+
+        publicationDate:
+          type: string
+          format: date-time
+          example: 2022-10-30T21:30:00.000Z
+
+        genre:
+          type: string
+          enum: [ comedy, crime, documentary, drama, horror, family, romance, scifi, thriller ]
+          example: drama
+
+        releaseYear:
+          type: integer
+          minimum: 1895
+          maximum: 2022
+          example: 2022
+
+        rating:
+          type: number
+          minimum: 0
+          maximum: 10
+          example: 6.2
+
+        moviePreviewLink:
+          type: string
+          format: url
+          example: https://example.com
+
+        movieLink:
+          type: string
+          format: url
+          example: https://example.com
+
+        actors:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          example: [ First actor, Second actor, Third actor ]
+          uniqueItems: true
+
+        producer:
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Movie producer
+
+        durationInMinutes:
+          type: number
+          minimum: 0.1
+          example: 60
+
+        commentsCount:
+          type: integer
+          minimum: 0
+          example: 10
+
+        posterLink:
+          type: string
+          format: uri
+          pattern: ([^\s]+(\.jpg)$)
+          example: movie_poster.jpg
+
+        backgroundImageLink:
+          type: string
+          format: uri
+          pattern: ([^\s]+(\.jpg)$)
+          example: movie_bg.jpg
+
+        backgroundColor:
+          type: string
+          example: gray
+
+        user:
+          $ref: '#/components/schemas/user'
+
+      required:
+        - title
+        - description
+        - publicationDate
+        - genre
+        - releaseYear
+        - rating
+        - moviePreviewLink
+        - movieLink
+        - actors
+        - producer
+        - durationInMinutes
+        - commentsCount
+        - user
+        - posterLink
+        - backgroundImageLink
+        - backgroundColor
+
+    updateMovie:
+      allOf:
+        - $ref: '#/components/schemas/createMovie'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              example: 07841e76-59a4-4eb4-9638-cc4e6d458b4d
+          required:
+            - id
+
+    movieListItem:
+      type: object
+
+      properties:
+        title:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: Movie title
+
+        publicationDate:
+          type: string
+          format: date-time
+          example: 2022-10-30T21:30:00.000Z
+
+        genre:
+          type: string
+          enum: [ comedy, crime, documentary, drama, horror, family, romance, scifi, thriller ]
+          example: drama
+
+        moviePreviewLink:
+          type: string
+          format: url
+          example: https://example.com
+
+        posterLink:
+          type: string
+          format: uri
+          pattern: ([^\s]+(\.jpg)$)
+          example: poster_image.jpg
+
+        commentsCount:
+          type: integer
+          minimum: 0
+          example: 10
+
+        user:
+          $ref: '#/components/schemas/user'
+
+      required:
+        - title
+        - publicationDate
+        - genre
+        - moviePreviewLink
+        - user
+        - posterLink
+        - commentsCount
+
+
+    comment:
+      type: object
+
+      properties:
+        comment:
+          type: string
+          minLength: 5
+          maxLength: 1024
+          example: Comment text
+
+        rating:
+          type: number
+          minimum: 0
+          maximum: 10
+          example: 9.2
+
+        date:
+          type: string
+          format: date-time
+          example: 2022-10-30T21:30:00.000Z
+
+        user:
+          $ref: '#/components/schemas/user'
+
+      required:
+        - comment
+        - rating
+        - user
+
+    user:
+      type: object
+
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 07841e76-59a4-4eb4-9638-cc4e6d458b4d
+
+        email:
+          type: string
+          example: your@mail.here
