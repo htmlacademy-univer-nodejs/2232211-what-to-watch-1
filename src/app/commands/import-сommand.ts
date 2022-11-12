@@ -47,9 +47,9 @@ export default class ImportCommand implements ICommand {
 
     try {
       const movies = fileReader.read(filename.trim());
-      console.log(JSON.stringify(movies, null, 2));
+      this.log.info(JSON.stringify(movies, null, 2));
     } catch (err) {
-      console.error(`Import failed: '${err}'`);
+      this.log.error(`Import failed: '${err}'`);
     }
 
     return Promise.resolve();
@@ -69,13 +69,13 @@ export default class ImportCommand implements ICommand {
 
   private onLine = async (line: string, resolve: () => void) => {
     const movie = toMovie(line);
-    console.log(`New movie: ${JSON.stringify(movie, null, 2)}`);
+    this.log.info(`New movie: ${JSON.stringify(movie, null, 2)}`);
     await this.saveMovie(movie);
     resolve();
   };
 
   private onComplete = async (count: number) => {
-    console.log(`${count} rows imported.`);
+    this.log.info(`${count} rows imported.`);
     await this.databaseService.disconnect();
   };
 }
