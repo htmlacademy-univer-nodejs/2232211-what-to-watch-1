@@ -5,12 +5,14 @@ import { ILog } from '../../common/loggers/logger.interface.js';
 import { UserEntity } from './user.entity.js';
 import CreateUserDto from './dto/create-user.js';
 import { DocumentType, types } from '@typegoose/typegoose';
+import { MovieEntity } from '../movie/movie.entity';
 
 @injectable()
 export default class UserService implements IUserService {
   constructor(
     @inject(Component.ILog) private readonly log: ILog,
-    @inject(Component.UserModel) private readonly userModel: types.ModelType<UserEntity>
+    @inject(Component.UserModel) private readonly userModel: types.ModelType<UserEntity>,
+    @inject(Component.MovieModel) private readonly movieModel: types.ModelType<MovieEntity>,
   ) {}
 
   public async create(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>> {
@@ -35,5 +37,22 @@ export default class UserService implements IUserService {
     }
 
     return this.create(dto, salt);
+  }
+
+  async findFavorite(userId: string): Promise<DocumentType<MovieEntity>[]> {
+    const favoriteMovies = await this.userModel.findById(userId).select('favoriteMovies');
+    return this.movieModel.find({ _id: { $in: favoriteMovies } });
+  }
+
+  async addFavorite(userId: string, movieId: string): Promise<void | null> {
+    return this.userModel.findByIdAndUpdate(userId, {
+      $push: { favoriteMovies: movieId }
+    });
+  }
+
+  async deleteFavorite(userId: string, movieId: string): Promise<void | null> {
+    return this.userModel.findByIdAndUpdate(userId, {
+      $pull: { favoriteMovies: movieId }
+    });
   }
 }

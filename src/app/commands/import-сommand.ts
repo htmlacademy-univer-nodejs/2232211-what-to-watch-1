@@ -30,7 +30,7 @@ export default class ImportCommand implements ICommand {
   constructor() {
     this.log = new ConsoleLog();
     this.movieService = new MovieService(this.log, MovieModel);
-    this.userService = new UserService(this.log, UserModel);
+    this.userService = new UserService(this.log, UserModel, MovieModel);
     this.databaseService = new MongoDBService(this.log);
     this.config = new ConfigService(this.log);
   }

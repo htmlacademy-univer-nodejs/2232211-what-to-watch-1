@@ -32,6 +32,9 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
   @prop({required: true, default: ''})
   private password!: string;
 
+  @prop({ required: true, default: [] })
+  public favoriteMovies!: string[];
+
   setPassword(password: string, salt: string) {
     if (password.length < 6 || password.length > 12) {
       throw new Error(`Password length must be from 6 to 12 symbols, but found: ${password.length} symbols`);
