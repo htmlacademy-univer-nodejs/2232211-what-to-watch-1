@@ -15,6 +15,9 @@ import { types } from '@typegoose/typegoose';
 import { IMovieService } from './modules/movie/movie-service.interface.js';
 import MovieService from './modules/movie/movie.service.js';
 import { MovieEntity, MovieModel } from './modules/movie/movie.entity.js';
+import { ICommentService } from './modules/comment/comment-service.interface.js';
+import CommentService from './modules/comment/comment.service.js';
+import { CommentEntity, CommentModel } from './modules/comment/comment.entity.js';
 
 const applicationContainer = new Container();
 applicationContainer.bind<Application>(Component.Application).to(Application).inSingletonScope();
@@ -23,9 +26,11 @@ applicationContainer.bind<IConfig>(Component.IConfig).to(ConfigService).inSingle
 applicationContainer.bind<IDatabase>(Component.IDatabase).to(MongoDBService).inSingletonScope();
 applicationContainer.bind<IUserService>(Component.IUserService).to(UserService);
 applicationContainer.bind<IMovieService>(Component.IMovieService).to(MovieService);
+applicationContainer.bind<ICommentService>(Component.ICommentService).to(CommentService);
 
 applicationContainer.bind<types.ModelType<UserEntity>>(Component.UserModel).toConstantValue(UserModel);
 applicationContainer.bind<types.ModelType<MovieEntity>>(Component.MovieModel).toConstantValue(MovieModel);
+applicationContainer.bind<types.ModelType<CommentEntity>>(Component.CommentModel).toConstantValue(CommentModel);
 
 const application = applicationContainer.get<Application>(Component.Application);
 await application.init();
