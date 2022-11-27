@@ -11,7 +11,7 @@ import { injectable } from 'inversify';
 export abstract class Controller implements IController {
   private readonly _router: Router;
 
-  constructor(protected readonly logger: ILog) {
+  constructor(protected readonly log: ILog) {
     this._router = Router();
   }
 
@@ -21,7 +21,7 @@ export abstract class Controller implements IController {
 
   addRoute<T extends string>(route: IRoute<T>) {
     this._router[route.method](route.path, asyncHandler(route.handler.bind(this)));
-    this.logger.info(`New route: ${route.method.toUpperCase()}: ${route.path}`);
+    this.log.info(`New route: ${route.method.toUpperCase()}: ${route.path}`);
   }
 
   send<T>(res: Response, statusCode: number, data: T): void {
