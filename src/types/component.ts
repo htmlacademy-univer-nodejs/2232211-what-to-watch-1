@@ -6,6 +6,7 @@ export const Component = {
   IUserService: Symbol.for('IUserService'),
   IMovieService: Symbol.for('IMovieService'),
   ICommentService: Symbol.for('ICommentService'),
+  IExceptionFilter: Symbol.for('IExceptionFilter'),
 
   UserModel: Symbol.for('UserModel'),
   MovieModel: Symbol.for('MovieModel'),
