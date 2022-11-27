@@ -1,7 +1,7 @@
-import { IController } from './controller.interface';
+import { IController } from './controller.interface.js';
 import { Response, Router } from 'express';
-import { ILog } from '../../loggers/logger.interface';
-import { IRoute } from './route.interface';
+import { ILog } from '../loggers/logger.interface.js';
+import { IRoute } from './route.interface.js';
 import asyncHandler from 'express-async-handler';
 import { StatusCodes } from 'http-status-codes';
 import { injectable } from 'inversify';
