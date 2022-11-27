@@ -18,6 +18,10 @@ export default class Application {
     this.expressApp = express();
   }
 
+  initMiddleware() {
+    this.expressApp.use(express.json());
+  }
+
   async init() {
     this.logger.info('Application initialized.');
     this.logger.info(`Get value from env $PORT: ${this.config.get('PORT')}`);
@@ -25,6 +29,8 @@ export default class Application {
     const uri = getDBConnectionURIFromConfig(this.config);
 
     await this.dbClient.connect(uri);
+
+    this.initMiddleware();
 
     const port = this.config.get('PORT');
     this.expressApp.listen(port, () => {
