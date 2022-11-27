@@ -24,18 +24,18 @@ export default class FavoriteController extends Controller {
     this.addRoute<FavoriteRoutes>({ path: FavoriteRoutes.DELETE_FAVORITE, method: HttpMethod.Delete, handler: this.deleteFavorite });
   }
 
-  async getFavorite({body}: Request<Record<string, unknown>, Record<string, unknown>, {userId: string}>, _res: Response): Promise<void> {
+  async getFavorite({body}: Request<Record<string, unknown>, Record<string, unknown>, {userId: string}>, res: Response): Promise<void> {
     const result = this.userService.findFavorite(body.userId);
-    this.ok(_res, fillDTO(MovieResponse, result));
+    this.ok(res, fillDTO(MovieResponse, result));
   }
 
-  async addFavorite({body}: Request<Record<string, unknown>, Record<string, unknown>, {userId: string, movieId: string}>, _res: Response): Promise<void> {
+  async addFavorite({body}: Request<Record<string, unknown>, Record<string, unknown>, {userId: string, movieId: string}>, res: Response): Promise<void> {
     await this.userService.addFavorite(body.movieId, body.userId);
-    this.created(_res, {message: 'Success. Add movie to favorite\'s list.'});
+    this.created(res, {message: 'Success. Add movie to favorite\'s list.'});
   }
 
-  async deleteFavorite({body}: Request<Record<string, unknown>, Record<string, unknown>, {userId: string, movieId: string}>, _res: Response): Promise<void> {
+  async deleteFavorite({body}: Request<Record<string, unknown>, Record<string, unknown>, {userId: string, movieId: string}>, res: Response): Promise<void> {
     await this.userService.deleteFavorite(body.movieId, body.userId);
-    this.noContent(_res, {message: 'Success. Delete movie from favorite\'s list.'});
+    this.noContent(res, {message: 'Success. Delete movie from favorite\'s list.'});
   }
 }
