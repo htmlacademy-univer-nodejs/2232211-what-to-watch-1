@@ -5,6 +5,7 @@ import { IConfig } from '../common/config/config.interface';
 import { getDBConnectionURIFromConfig } from '../utils/db.js';
 import { IDatabase } from '../common/db-client/database.interface.js';
 import express, { Express } from 'express';
+import { IController } from '../common/controllers/controller.interface.js';
 
 @injectable()
 export default class Application {
@@ -13,13 +14,18 @@ export default class Application {
   constructor(
     @inject(Component.ILog) private logger: ILog,
     @inject(Component.IConfig) private config: IConfig,
-    @inject(Component.IDatabase) private dbClient: IDatabase
+    @inject(Component.IDatabase) private dbClient: IDatabase,
+    @inject(Component.FavoriteController) private favoriteController: IController,
   ) {
     this.expressApp = express();
   }
 
   initMiddleware() {
     this.expressApp.use(express.json());
+  }
+
+  initRoutes() {
+    this.expressApp.use('/favorite', this.favoriteController.router);
   }
 
   async init() {
@@ -31,6 +37,7 @@ export default class Application {
     await this.dbClient.connect(uri);
 
     this.initMiddleware();
+    this.initRoutes();
 
     const port = this.config.get('PORT');
     this.expressApp.listen(port, () => {

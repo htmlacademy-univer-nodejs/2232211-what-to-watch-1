@@ -10,4 +10,6 @@ export const Component = {
   UserModel: Symbol.for('UserModel'),
   MovieModel: Symbol.for('MovieModel'),
   CommentModel: Symbol.for('CommentModel'),
+
+  FavoriteController: Symbol.for('FavoriteController'),
 } as const;
