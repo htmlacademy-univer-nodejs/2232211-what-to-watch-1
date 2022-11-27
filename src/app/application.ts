@@ -18,6 +18,7 @@ export default class Application {
     @inject(Component.FavoriteController) private favoriteController: IController,
     @inject(Component.PromoController) private promoController: IController,
     @inject(Component.UsersController) private usersController: IController,
+    @inject(Component.MovieController) private movieController: IController,
   ) {
     this.expressApp = express();
   }
@@ -30,6 +31,7 @@ export default class Application {
     this.expressApp.use('/favorite', this.favoriteController.router);
     this.expressApp.use('/promo', this.promoController.router);
     this.expressApp.use('/users', this.usersController.router);
+    this.expressApp.use('/movies', this.movieController.router);
   }
 
   async init() {

@@ -74,7 +74,7 @@ paths:
 
       parameters:
         - in: path
-          name: id
+          name: movieId
           schema:
             type: string
             format: uuid
@@ -98,7 +98,7 @@ paths:
 
       parameters:
         - in: path
-          name: id
+          name: movieId
           schema:
             type: string
             format: uuid
@@ -133,7 +133,7 @@ paths:
 
       parameters:
         - in: path
-          name: id
+          name: movieId
           schema:
             type: string
             format: uuid
