@@ -21,6 +21,7 @@ import { CommentEntity, CommentModel } from './modules/comment/comment.entity.js
 import { IController } from './common/controllers/controller.interface.js';
 import FavoriteController from './modules/favorite/favorite.controller.js';
 import PromoController from './modules/promo/promo.controller.js';
+import UsersController from './modules/user/users.controller.js';
 
 const applicationContainer = new Container();
 applicationContainer.bind<Application>(Component.Application).to(Application).inSingletonScope();
@@ -37,6 +38,7 @@ applicationContainer.bind<types.ModelType<CommentEntity>>(Component.CommentModel
 
 applicationContainer.bind<IController>(Component.FavoriteController).to(FavoriteController).inSingletonScope();
 applicationContainer.bind<IController>(Component.PromoController).to(PromoController).inSingletonScope();
+applicationContainer.bind<IController>(Component.UsersController).to(UsersController).inSingletonScope();
 
 const application = applicationContainer.get<Application>(Component.Application);
 await application.init();

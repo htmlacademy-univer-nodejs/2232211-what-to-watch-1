@@ -17,6 +17,7 @@ export default class Application {
     @inject(Component.IDatabase) private dbClient: IDatabase,
     @inject(Component.FavoriteController) private favoriteController: IController,
     @inject(Component.PromoController) private promoController: IController,
+    @inject(Component.UsersController) private usersController: IController,
   ) {
     this.expressApp = express();
   }
@@ -28,6 +29,7 @@ export default class Application {
   initRoutes() {
     this.expressApp.use('/favorite', this.favoriteController.router);
     this.expressApp.use('/promo', this.promoController.router);
+    this.expressApp.use('/users', this.usersController.router);
   }
 
   async init() {

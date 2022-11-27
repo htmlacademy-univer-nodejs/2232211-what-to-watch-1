@@ -377,7 +377,7 @@ paths:
                 $ref: '#/components/schemas/user'
 
         "409":
-          description: User with that id is already exists
+          description: User with that email is already exists
 
   /users/login:
     post:
