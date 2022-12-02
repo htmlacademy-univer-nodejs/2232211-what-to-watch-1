@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 import { Controller } from '../../common/controllers/controller.js';
 import { Component } from '../../types/component.js';
 import { ILog } from '../../common/loggers/logger.interface.js';
-import { FavoriteRoutes } from './favorite.routes.js';
+import { FavoriteRoute } from './favorite.route.js';
 import { HttpMethod } from '../../common/controllers/http-method.enum.js';
 import { Request, Response } from 'express';
 import { fillDTO } from '../../utils/common-functions.js';
@@ -19,9 +19,9 @@ export default class FavoriteController extends Controller {
 
     this.log.info('Register routes for FavoriteController.');
 
-    this.addRoute<FavoriteRoutes>({ path: FavoriteRoutes.GET_FAVORITE, method: HttpMethod.Get, handler: this.getFavorite });
-    this.addRoute<FavoriteRoutes>({ path: FavoriteRoutes.ADD_FAVORITE, method: HttpMethod.Post, handler: this.addFavorite });
-    this.addRoute<FavoriteRoutes>({ path: FavoriteRoutes.DELETE_FAVORITE, method: HttpMethod.Delete, handler: this.deleteFavorite });
+    this.addRoute<FavoriteRoute>({ path: FavoriteRoute.GET_FAVORITE, method: HttpMethod.Get, handler: this.getFavorite });
+    this.addRoute<FavoriteRoute>({ path: FavoriteRoute.ADD_FAVORITE, method: HttpMethod.Post, handler: this.addFavorite });
+    this.addRoute<FavoriteRoute>({ path: FavoriteRoute.DELETE_FAVORITE, method: HttpMethod.Delete, handler: this.deleteFavorite });
   }
 
   async getFavorite({body}: Request<Record<string, unknown>, Record<string, unknown>, {userId: string}>, res: Response): Promise<void> {

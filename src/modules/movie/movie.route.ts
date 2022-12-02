@@ -1,4 +1,4 @@
-export enum MovieRoutes {
+export enum MovieRoute {
   GET_MOVIES = '/',
   ADD_MOVIE = '/',
   GET_MOVIE = '/:movieId',

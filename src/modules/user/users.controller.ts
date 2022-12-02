@@ -4,7 +4,7 @@ import { Component } from '../../types/component.js';
 import { ILog } from '../../common/loggers/logger.interface.js';
 import { IUserService } from './user-service.interface.js';
 import { IConfig } from '../../common/config/config.interface.js';
-import { UserRoutes } from './user.routes.js';
+import { UserRoute } from './user.route.js';
 import { HttpMethod } from '../../common/controllers/http-method.enum.js';
 import { Request, Response } from 'express';
 import CreateUserDto from './dto/create-user.js';
@@ -25,10 +25,10 @@ export default class UsersController extends Controller {
 
     this.log.info('Register routes for UsersController.');
 
-    this.addRoute<UserRoutes>({path: UserRoutes.ADD_USER, method: HttpMethod.Post, handler: this.addUser});
-    this.addRoute<UserRoutes>({path: UserRoutes.LOGIN, method: HttpMethod.Post, handler: this.login});
-    this.addRoute<UserRoutes>({path: UserRoutes.GET_USER, method: HttpMethod.Get, handler: this.getUser});
-    this.addRoute<UserRoutes>({path: UserRoutes.LOGOUT, method: HttpMethod.Delete, handler: this.logout});
+    this.addRoute<UserRoute>({path: UserRoute.ADD_USER, method: HttpMethod.Post, handler: this.addUser});
+    this.addRoute<UserRoute>({path: UserRoute.LOGIN, method: HttpMethod.Post, handler: this.login});
+    this.addRoute<UserRoute>({path: UserRoute.GET_USER, method: HttpMethod.Get, handler: this.getUser});
+    this.addRoute<UserRoute>({path: UserRoute.LOGOUT, method: HttpMethod.Delete, handler: this.logout});
   }
 
   async addUser({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateUserDto>, res: Response): Promise<void> {

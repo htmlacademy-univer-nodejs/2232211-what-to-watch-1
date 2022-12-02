@@ -3,7 +3,7 @@ import { Controller } from '../../common/controllers/controller.js';
 import { Component } from '../../types/component.js';
 import { ILog } from '../../common/loggers/logger.interface.js';
 import { HttpMethod } from '../../common/controllers/http-method.enum.js';
-import { MovieRoutes } from './movie.routes.js';
+import { MovieRoute } from './movie.route.js';
 import { Request, Response } from 'express';
 import { fillDTO } from '../../utils/common-functions.js';
 import MovieResponse from './response/movie.response.js';
@@ -23,11 +23,11 @@ export default class MovieController extends Controller {
 
     this.log.info('Register routes for MovieController.');
 
-    this.addRoute<MovieRoutes>({ path: MovieRoutes.ADD_MOVIE, method: HttpMethod.Post, handler: this.addMovie });
-    this.addRoute<MovieRoutes>({ path: MovieRoutes.GET_MOVIE, method: HttpMethod.Get, handler: this.getMovie });
-    this.addRoute<MovieRoutes>({ path: MovieRoutes.GET_MOVIES, method: HttpMethod.Get, handler: this.getMovies });
-    this.addRoute<MovieRoutes>({ path: MovieRoutes.UPDATE_MOVIE, method: HttpMethod.Patch, handler: this.updateMovie });
-    this.addRoute<MovieRoutes>({ path: MovieRoutes.DELETE_MOVIE, method: HttpMethod.Delete, handler: this.deleteMovie });
+    this.addRoute<MovieRoute>({ path: MovieRoute.ADD_MOVIE, method: HttpMethod.Post, handler: this.addMovie });
+    this.addRoute<MovieRoute>({ path: MovieRoute.GET_MOVIE, method: HttpMethod.Get, handler: this.getMovie });
+    this.addRoute<MovieRoute>({ path: MovieRoute.GET_MOVIES, method: HttpMethod.Get, handler: this.getMovies });
+    this.addRoute<MovieRoute>({ path: MovieRoute.UPDATE_MOVIE, method: HttpMethod.Patch, handler: this.updateMovie });
+    this.addRoute<MovieRoute>({ path: MovieRoute.DELETE_MOVIE, method: HttpMethod.Delete, handler: this.deleteMovie });
   }
 
   async addMovie({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateMovieDto>, res: Response): Promise<void> {
