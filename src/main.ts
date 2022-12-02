@@ -18,6 +18,13 @@ import { MovieEntity, MovieModel } from './modules/movie/movie.entity.js';
 import { ICommentService } from './modules/comment/comment-service.interface.js';
 import CommentService from './modules/comment/comment.service.js';
 import { CommentEntity, CommentModel } from './modules/comment/comment.entity.js';
+import { IController } from './common/controllers/controller.interface.js';
+import FavoriteController from './modules/favorite/favorite.controller.js';
+import PromoController from './modules/promo/promo.controller.js';
+import UsersController from './modules/user/users.controller.js';
+import MovieController from './modules/movie/movie.controller.js';
+import { IExceptionFilter } from './common/filters/exception-filter/exception-filter.interface.js';
+import ExceptionFilter from './common/filters/exception-filter/exception-filter.js';
 
 const applicationContainer = new Container();
 applicationContainer.bind<Application>(Component.Application).to(Application).inSingletonScope();
@@ -31,6 +38,13 @@ applicationContainer.bind<ICommentService>(Component.ICommentService).to(Comment
 applicationContainer.bind<types.ModelType<UserEntity>>(Component.UserModel).toConstantValue(UserModel);
 applicationContainer.bind<types.ModelType<MovieEntity>>(Component.MovieModel).toConstantValue(MovieModel);
 applicationContainer.bind<types.ModelType<CommentEntity>>(Component.CommentModel).toConstantValue(CommentModel);
+
+applicationContainer.bind<IController>(Component.FavoriteController).to(FavoriteController).inSingletonScope();
+applicationContainer.bind<IController>(Component.PromoController).to(PromoController).inSingletonScope();
+applicationContainer.bind<IController>(Component.UsersController).to(UsersController).inSingletonScope();
+applicationContainer.bind<IController>(Component.MovieController).to(MovieController).inSingletonScope();
+
+applicationContainer.bind<IExceptionFilter>(Component.IExceptionFilter).to(ExceptionFilter).inSingletonScope();
 
 const application = applicationContainer.get<Application>(Component.Application);
 await application.init();

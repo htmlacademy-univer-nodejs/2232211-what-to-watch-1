@@ -74,7 +74,7 @@ paths:
 
       parameters:
         - in: path
-          name: id
+          name: movieId
           schema:
             type: string
             format: uuid
@@ -98,7 +98,7 @@ paths:
 
       parameters:
         - in: path
-          name: id
+          name: movieId
           schema:
             type: string
             format: uuid
@@ -133,7 +133,7 @@ paths:
 
       parameters:
         - in: path
-          name: id
+          name: movieId
           schema:
             type: string
             format: uuid
@@ -231,18 +231,18 @@ paths:
                   format: uuid
                   example: 82fe1788-b388-4001-9efd-8f2095842b31
 
-                id:
+                movieId:
                   type: string
                   format: uuid
                   example: 07841e76-59a4-4eb4-9638-cc4e6d458b4d
 
               required:
                 - userId
-                - id
+                - movieId
 
       responses:
         "201":
-          description: Movie is in favourite's list
+          description: Success. Add movie to favorite's list.
 
         "401":
           description: User is not authorized
@@ -266,18 +266,18 @@ paths:
                   format: uuid
                   example: 82fe1788-b388-4001-9efd-8f2095842b31
 
-                id:
+                movieId:
                   type: string
                   format: uuid
                   example: 07841e76-59a4-4eb4-9638-cc4e6d458b4d
 
               required:
                 - userId
-                - id
+                - movieId
 
       responses:
         "204":
-          description: Movie is not in favourite's list
+          description: Success. Delete movie from favorite's list.
 
         "401":
           description: User is not authorized
@@ -377,7 +377,7 @@ paths:
                 $ref: '#/components/schemas/user'
 
         "409":
-          description: User with that id is already exists
+          description: User with that email is already exists
 
   /users/login:
     post:
