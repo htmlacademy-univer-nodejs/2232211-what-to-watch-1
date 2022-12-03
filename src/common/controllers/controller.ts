@@ -20,7 +20,14 @@ export abstract class Controller implements IController {
   }
 
   addRoute<T extends string>(route: IRoute<T>) {
-    this._router[route.method](route.path, asyncHandler(route.handler.bind(this)));
+    const routeHandler = asyncHandler(route.handler.bind(this));
+    const middlewares = route.middlewares?.map(
+      (middleware) => asyncHandler(middleware.execute.bind(middleware))
+    );
+
+    const allHandlers = middlewares ? [...middlewares, routeHandler] : routeHandler;
+    this._router[route.method](route.path, allHandlers);
+
     this.log.info(`New route: ${route.method.toUpperCase()}: ${route.path}`);
   }
 
