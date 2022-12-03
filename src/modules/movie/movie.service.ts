@@ -80,4 +80,8 @@ export default class MovieService implements IMovieService {
       rating: (oldRating * oldCommentsCount + rating) / (oldCommentsCount + 1)
     });
   }
+
+  async exists(documentId: string): Promise<boolean> {
+    return (this.movieModel.exists({_id: documentId})) !== null;
+  }
 }

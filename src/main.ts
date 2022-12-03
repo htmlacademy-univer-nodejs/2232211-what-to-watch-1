@@ -25,6 +25,7 @@ import UsersController from './modules/user/users.controller.js';
 import MovieController from './modules/movie/movie.controller.js';
 import { IExceptionFilter } from './common/filters/exception-filter/exception-filter.interface.js';
 import ExceptionFilter from './common/filters/exception-filter/exception-filter.js';
+import CommentController from './modules/comment/comment.controller.js';
 
 const applicationContainer = new Container();
 applicationContainer.bind<Application>(Component.Application).to(Application).inSingletonScope();
@@ -43,6 +44,7 @@ applicationContainer.bind<IController>(Component.FavoriteController).to(Favorite
 applicationContainer.bind<IController>(Component.PromoController).to(PromoController).inSingletonScope();
 applicationContainer.bind<IController>(Component.UsersController).to(UsersController).inSingletonScope();
 applicationContainer.bind<IController>(Component.MovieController).to(MovieController).inSingletonScope();
+applicationContainer.bind<IController>(Component.CommentController).to(CommentController).inSingletonScope();
 
 applicationContainer.bind<IExceptionFilter>(Component.IExceptionFilter).to(ExceptionFilter).inSingletonScope();
 

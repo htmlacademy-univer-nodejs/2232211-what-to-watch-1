@@ -12,12 +12,20 @@ import { IMovieService } from './movie-service.interface.js';
 import HttpError from '../../common/errors/http-error.js';
 import { StatusCodes } from 'http-status-codes';
 import UpdateMovieDto from './dto/update-movie.js';
+import { ICommentService } from '../comment/comment-service.interface.js';
+import * as staticCore from 'express-serve-static-core';
+import CommentResponse from '../comment/response/comment.response.js';
+
+type ParamsGetMovie = {
+  movieId: string;
+}
 
 @injectable()
 export default class MovieController extends Controller {
   constructor(
     @inject(Component.ILog) log: ILog,
     @inject(Component.IMovieService) private readonly movieService: IMovieService,
+    @inject(Component.ICommentService) private readonly commentService: ICommentService,
   ) {
     super(log);
 
@@ -28,6 +36,7 @@ export default class MovieController extends Controller {
     this.addRoute<MovieRoute>({ path: MovieRoute.GET_MOVIES, method: HttpMethod.Get, handler: this.getMovies });
     this.addRoute<MovieRoute>({ path: MovieRoute.UPDATE_MOVIE, method: HttpMethod.Patch, handler: this.updateMovie });
     this.addRoute<MovieRoute>({ path: MovieRoute.DELETE_MOVIE, method: HttpMethod.Delete, handler: this.deleteMovie });
+    this.addRoute<MovieRoute>({ path: MovieRoute.GET_COMMENTS, method: HttpMethod.Get, handler: this.getComments });
   }
 
   async addMovie({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateMovieDto>, res: Response): Promise<void> {
@@ -74,5 +83,10 @@ export default class MovieController extends Controller {
     await this.movieService.deleteById(`${params.movieId}`);
 
     this.noContent(res, {message: 'The movie successfully deleted'});
+  }
+
+  async getComments({params}: Request<staticCore.ParamsDictionary | ParamsGetMovie>, res: Response): Promise<void> {
+    const comments = await this.commentService.findByMovieId(params.movieId);
+    this.ok(res, fillDTO(CommentResponse, comments));
   }
 }

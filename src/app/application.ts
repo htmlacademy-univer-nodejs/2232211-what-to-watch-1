@@ -20,6 +20,7 @@ export default class Application {
     @inject(Component.PromoController) private promoController: IController,
     @inject(Component.UsersController) private usersController: IController,
     @inject(Component.MovieController) private movieController: IController,
+    @inject(Component.CommentController) private commentController: IController,
     @inject(Component.IExceptionFilter) private exceptionFilter: IExceptionFilter,
   ) {
     this.expressApp = express();
@@ -34,6 +35,7 @@ export default class Application {
     this.expressApp.use('/promo', this.promoController.router);
     this.expressApp.use('/users', this.usersController.router);
     this.expressApp.use('/movies', this.movieController.router);
+    this.expressApp.use('/comments', this.commentController.router);
   }
 
   initExceptionFilters() {
