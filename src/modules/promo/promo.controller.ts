@@ -19,10 +19,10 @@ export default class PromoController extends Controller {
 
     this.log.info('Register routes for PromoController.');
 
-    this.addRoute<PromoRoute>({path: PromoRoute.GET_PROMO, method: HttpMethod.Get, handler: this.getPromo});
+    this.addRoute<PromoRoute>({path: PromoRoute.GET_PROMO, method: HttpMethod.Get, handler: this.show});
   }
 
-  async getPromo(_: Request, res: Response): Promise<void> {
+  async show(_: Request, res: Response): Promise<void> {
     const result = this.movieService.findPromo();
     this.ok(res, fillDTO(MovieResponse, result));
   }

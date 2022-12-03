@@ -31,21 +31,21 @@ export default class MovieController extends Controller {
 
     this.log.info('Register routes for MovieController.');
 
-    this.addRoute<MovieRoute>({ path: MovieRoute.ADD_MOVIE, method: HttpMethod.Post, handler: this.addMovie });
-    this.addRoute<MovieRoute>({ path: MovieRoute.GET_MOVIE, method: HttpMethod.Get, handler: this.getMovie });
-    this.addRoute<MovieRoute>({ path: MovieRoute.GET_MOVIES, method: HttpMethod.Get, handler: this.getMovies });
-    this.addRoute<MovieRoute>({ path: MovieRoute.UPDATE_MOVIE, method: HttpMethod.Patch, handler: this.updateMovie });
-    this.addRoute<MovieRoute>({ path: MovieRoute.DELETE_MOVIE, method: HttpMethod.Delete, handler: this.deleteMovie });
-    this.addRoute<MovieRoute>({ path: MovieRoute.GET_COMMENTS, method: HttpMethod.Get, handler: this.getComments });
+    this.addRoute<MovieRoute>({ path: MovieRoute.ADD_MOVIE, method: HttpMethod.Post, handler: this.create });
+    this.addRoute<MovieRoute>({ path: MovieRoute.GET_MOVIE, method: HttpMethod.Get, handler: this.show });
+    this.addRoute<MovieRoute>({ path: MovieRoute.GET_MOVIES, method: HttpMethod.Get, handler: this.index });
+    this.addRoute<MovieRoute>({ path: MovieRoute.UPDATE_MOVIE, method: HttpMethod.Patch, handler: this.update });
+    this.addRoute<MovieRoute>({ path: MovieRoute.DELETE_MOVIE, method: HttpMethod.Delete, handler: this.delete });
+    this.addRoute<MovieRoute>({ path: MovieRoute.GET_COMMENTS, method: HttpMethod.Get, handler: this.indexComments });
   }
 
-  async addMovie({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateMovieDto>, res: Response): Promise<void> {
+  async create({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateMovieDto>, res: Response): Promise<void> {
     const result = await this.movieService.create(body);
 
     this.created(res, fillDTO(MovieResponse, result));
   }
 
-  async getMovie({params}: Request<Record<string, unknown>>, res: Response): Promise<void> {
+  async show({params}: Request<Record<string, unknown>>, res: Response): Promise<void> {
     const movie = await this.movieService.findById(`${params.movieId}`);
 
     if (!movie) {
@@ -55,13 +55,13 @@ export default class MovieController extends Controller {
     this.ok(res, fillDTO(MovieResponse, movie));
   }
 
-  async getMovies(_req: Request, res: Response): Promise<void> {
+  async index(_req: Request, res: Response): Promise<void> {
     const movies = await this.movieService.find();
 
     this.ok(res, fillDTO(MovieResponse, movies));
   }
 
-  async updateMovie({params, body}: Request<Record<string, string>, Record<string, unknown>, UpdateMovieDto>, res: Response): Promise<void> {
+  async update({params, body}: Request<Record<string, string>, Record<string, unknown>, UpdateMovieDto>, res: Response): Promise<void> {
     const movie = await this.movieService.findById(params.movieId);
 
     if (!movie) {
@@ -73,7 +73,7 @@ export default class MovieController extends Controller {
     this.ok(res, fillDTO(MovieResponse, result));
   }
 
-  async deleteMovie({params}: Request<Record<string, string>>, res: Response): Promise<void> {
+  async delete({params}: Request<Record<string, string>>, res: Response): Promise<void> {
     const movie = await this.movieService.findById(`${params.movieId}`);
 
     if (!movie) {
@@ -85,7 +85,7 @@ export default class MovieController extends Controller {
     this.noContent(res, {message: 'The movie successfully deleted'});
   }
 
-  async getComments({params}: Request<staticCore.ParamsDictionary | ParamsGetMovie>, res: Response): Promise<void> {
+  async indexComments({params}: Request<staticCore.ParamsDictionary | ParamsGetMovie>, res: Response): Promise<void> {
     const comments = await this.commentService.findByMovieId(params.movieId);
     this.ok(res, fillDTO(CommentResponse, comments));
   }
