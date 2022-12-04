@@ -15,6 +15,7 @@ import UpdateMovieDto from './dto/update-movie.js';
 import { ICommentService } from '../comment/comment-service.interface.js';
 import * as staticCore from 'express-serve-static-core';
 import CommentResponse from '../comment/response/comment.response.js';
+import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-object-id.middleware';
 
 type ParamsGetMovie = {
   movieId: string;
@@ -32,11 +33,39 @@ export default class MovieController extends Controller {
     this.log.info('Register routes for MovieController.');
 
     this.addRoute<MovieRoute>({ path: MovieRoute.ADD_MOVIE, method: HttpMethod.Post, handler: this.create });
-    this.addRoute<MovieRoute>({ path: MovieRoute.GET_MOVIE, method: HttpMethod.Get, handler: this.show });
+    this.addRoute<MovieRoute>({
+      path: MovieRoute.GET_MOVIE,
+      method: HttpMethod.Get,
+      handler: this.show,
+      middlewares: [
+        new ValidateObjectIdMiddleware('movieId'),
+      ],
+    });
     this.addRoute<MovieRoute>({ path: MovieRoute.GET_MOVIES, method: HttpMethod.Get, handler: this.index });
-    this.addRoute<MovieRoute>({ path: MovieRoute.UPDATE_MOVIE, method: HttpMethod.Patch, handler: this.update });
-    this.addRoute<MovieRoute>({ path: MovieRoute.DELETE_MOVIE, method: HttpMethod.Delete, handler: this.delete });
-    this.addRoute<MovieRoute>({ path: MovieRoute.GET_COMMENTS, method: HttpMethod.Get, handler: this.indexComments });
+    this.addRoute<MovieRoute>({
+      path: MovieRoute.UPDATE_MOVIE,
+      method: HttpMethod.Patch,
+      handler: this.update,
+      middlewares: [
+        new ValidateObjectIdMiddleware('movieId'),
+      ],
+    });
+    this.addRoute<MovieRoute>({
+      path: MovieRoute.DELETE_MOVIE,
+      method: HttpMethod.Delete,
+      handler: this.delete,
+      middlewares: [
+        new ValidateObjectIdMiddleware('movieId'),
+      ],
+    });
+    this.addRoute<MovieRoute>({
+      path: MovieRoute.GET_COMMENTS,
+      method: HttpMethod.Get,
+      handler: this.indexComments,
+      middlewares: [
+        new ValidateObjectIdMiddleware('movieId'),
+      ],
+    });
   }
 
   async create({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateMovieDto>, res: Response): Promise<void> {
