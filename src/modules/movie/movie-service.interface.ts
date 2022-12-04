@@ -13,4 +13,5 @@ export interface IMovieService {
   findPromo(): Promise<DocumentType<MovieEntity> | null>;
   incCommentsCount(movieId: string): Promise<void | null>;
   updateRating(movieId: string, rating: number): Promise<void | null>;
+  exists(documentId: string): Promise<boolean>;
 }

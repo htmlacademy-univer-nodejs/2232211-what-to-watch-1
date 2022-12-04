@@ -4,4 +4,5 @@ export enum MovieRoute {
   GET_MOVIE = '/:movieId',
   UPDATE_MOVIE = '/:movieId',
   DELETE_MOVIE = '/:movieId',
+  GET_COMMENTS = '/:movieId/comments',
 }

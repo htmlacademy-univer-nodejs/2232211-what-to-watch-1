@@ -13,6 +13,7 @@ import { StatusCodes } from 'http-status-codes';
 import { fillDTO } from '../../utils/common-functions.js';
 import UserResponse from './response/user.response.js';
 import LoginUserDto from './dto/login-user.js';
+import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 
 @injectable()
 export default class UsersController extends Controller {
@@ -25,13 +26,27 @@ export default class UsersController extends Controller {
 
     this.log.info('Register routes for UsersController.');
 
-    this.addRoute<UserRoute>({path: UserRoute.ADD_USER, method: HttpMethod.Post, handler: this.addUser});
-    this.addRoute<UserRoute>({path: UserRoute.LOGIN, method: HttpMethod.Post, handler: this.login});
-    this.addRoute<UserRoute>({path: UserRoute.GET_USER, method: HttpMethod.Get, handler: this.getUser});
+    this.addRoute<UserRoute>({
+      path: UserRoute.ADD_USER,
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [
+        new ValidateDtoMiddleware(CreateUserDto),
+      ]
+    });
+    this.addRoute<UserRoute>({
+      path: UserRoute.LOGIN,
+      method: HttpMethod.Post,
+      handler: this.login,
+      middlewares: [
+        new ValidateDtoMiddleware(LoginUserDto),
+      ],
+    });
+    this.addRoute<UserRoute>({path: UserRoute.GET_USER, method: HttpMethod.Get, handler: this.show});
     this.addRoute<UserRoute>({path: UserRoute.LOGOUT, method: HttpMethod.Delete, handler: this.logout});
   }
 
-  async addUser({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateUserDto>, res: Response): Promise<void> {
+  async create({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateUserDto>, res: Response): Promise<void> {
     const isUserExists = await this.userService.findByEmail(body.email);
 
     if (isUserExists) {
@@ -52,7 +67,7 @@ export default class UsersController extends Controller {
     throw new HttpError(StatusCodes.NOT_IMPLEMENTED, 'Not implemented', 'UserController');
   }
 
-  async getUser(): Promise<void> {
+  async show(): Promise<void> {
     throw new HttpError(StatusCodes.NOT_IMPLEMENTED, 'Not implemented', 'UserController');
   }
 
