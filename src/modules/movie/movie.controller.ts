@@ -15,7 +15,8 @@ import UpdateMovieDto from './dto/update-movie.js';
 import { ICommentService } from '../comment/comment-service.interface.js';
 import * as staticCore from 'express-serve-static-core';
 import CommentResponse from '../comment/response/comment.response.js';
-import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-object-id.middleware';
+import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-object-id.middleware.js';
+import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 
 type ParamsGetMovie = {
   movieId: string;
@@ -32,7 +33,14 @@ export default class MovieController extends Controller {
 
     this.log.info('Register routes for MovieController.');
 
-    this.addRoute<MovieRoute>({ path: MovieRoute.ADD_MOVIE, method: HttpMethod.Post, handler: this.create });
+    this.addRoute<MovieRoute>({
+      path: MovieRoute.ADD_MOVIE,
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [
+        new ValidateDtoMiddleware(CreateMovieDto),
+      ],
+    });
     this.addRoute<MovieRoute>({
       path: MovieRoute.GET_MOVIE,
       method: HttpMethod.Get,
@@ -48,6 +56,7 @@ export default class MovieController extends Controller {
       handler: this.update,
       middlewares: [
         new ValidateObjectIdMiddleware('movieId'),
+        new ValidateDtoMiddleware(UpdateMovieDto),
       ],
     });
     this.addRoute<MovieRoute>({
