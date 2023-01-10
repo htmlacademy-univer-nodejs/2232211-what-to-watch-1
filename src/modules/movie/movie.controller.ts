@@ -17,6 +17,7 @@ import * as staticCore from 'express-serve-static-core';
 import CommentResponse from '../comment/response/comment.response.js';
 import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-object-id.middleware.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
+import { DocumentExistsMiddleware } from '../../common/middlewares/document-exists.middleware.js';
 
 type ParamsGetMovie = {
   movieId: string;
@@ -47,6 +48,7 @@ export default class MovieController extends Controller {
       handler: this.show,
       middlewares: [
         new ValidateObjectIdMiddleware('movieId'),
+        new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId'),
       ],
     });
     this.addRoute<MovieRoute>({ path: MovieRoute.GET_MOVIES, method: HttpMethod.Get, handler: this.index });
@@ -57,6 +59,7 @@ export default class MovieController extends Controller {
       middlewares: [
         new ValidateObjectIdMiddleware('movieId'),
         new ValidateDtoMiddleware(UpdateMovieDto),
+        new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId'),
       ],
     });
     this.addRoute<MovieRoute>({
@@ -65,6 +68,7 @@ export default class MovieController extends Controller {
       handler: this.delete,
       middlewares: [
         new ValidateObjectIdMiddleware('movieId'),
+        new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId'),
       ],
     });
     this.addRoute<MovieRoute>({
@@ -73,6 +77,7 @@ export default class MovieController extends Controller {
       handler: this.indexComments,
       middlewares: [
         new ValidateObjectIdMiddleware('movieId'),
+        new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId'),
       ],
     });
   }

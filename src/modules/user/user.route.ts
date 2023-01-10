@@ -3,4 +3,5 @@ export enum UserRoute {
   GET_USER = '/login',
   LOGIN = '/login',
   LOGOUT = '/logout',
+  UPLOAD_AVATAR = '/:userId/avatar',
 }
