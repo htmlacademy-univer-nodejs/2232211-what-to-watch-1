@@ -13,6 +13,7 @@ import { StatusCodes } from 'http-status-codes';
 import { fillDTO } from '../../utils/common-functions.js';
 import CommentResponse from './response/comment.response.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
+import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
 
 export default class CommentController extends Controller {
   constructor(
@@ -29,6 +30,7 @@ export default class CommentController extends Controller {
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateDtoMiddleware(CreateCommentDto),
       ],
     });
