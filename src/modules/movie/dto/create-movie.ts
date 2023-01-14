@@ -1,5 +1,5 @@
 import { Genre, Genres } from '../../../models/genre.js';
-import { IsArray, IsDateString, IsEnum, IsInt, IsMongoId, IsString, Length, Matches, Max, Min } from 'class-validator';
+import { IsArray, IsDateString, IsEnum, IsInt, IsString, Length, Matches, Max, Min } from 'class-validator';
 
 export default class CreateMovieDto {
   @Length(2, 100, {message: 'title length must be from 2 to 100 symbols'})
@@ -35,7 +35,6 @@ export default class CreateMovieDto {
   @Min(0, {message: 'durationInMinutes can not be less than 0'})
   public durationInMinutes!: number;
 
-  @IsMongoId({message: 'userId field must be valid an id'})
   public userId!: string;
 
   @Matches(/(\S+(\.jpg)$)/, {message: 'posterLink must be .jpg format image'})

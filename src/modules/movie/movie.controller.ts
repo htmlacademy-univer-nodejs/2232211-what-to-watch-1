@@ -86,8 +86,8 @@ export default class MovieController extends Controller {
     });
   }
 
-  async create({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateMovieDto>, res: Response): Promise<void> {
-    const result = await this.movieService.create(body);
+  async create({body, user}: Request<Record<string, unknown>, Record<string, unknown>, CreateMovieDto>, res: Response): Promise<void> {
+    const result = await this.movieService.create({...body, userId: user.id});
 
     this.created(res, fillDTO(MovieResponse, result));
   }
