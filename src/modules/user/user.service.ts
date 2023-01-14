@@ -60,11 +60,7 @@ export default class UserService implements IUserService {
   public async verifyUser(dto: LoginUserDto, salt: string): Promise<DocumentType<UserEntity> | null> {
     const user = await this.findByEmail(dto.email);
 
-    if (!user) {
-      return null;
-    }
-
-    if (user.verifyPassword(dto.password, salt)) {
+    if (user && user.verifyPassword(dto.password, salt)) {
       return user;
     }
 
