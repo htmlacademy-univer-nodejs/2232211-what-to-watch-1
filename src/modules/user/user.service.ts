@@ -6,6 +6,7 @@ import { UserEntity } from './user.entity.js';
 import CreateUserDto from './dto/create-user.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { MovieEntity } from '../movie/movie.entity';
+import LoginUserDto from './dto/login-user.js';
 
 @injectable()
 export default class UserService implements IUserService {
@@ -54,5 +55,15 @@ export default class UserService implements IUserService {
     return this.userModel.findByIdAndUpdate(userId, {
       $pull: { favoriteMovies: movieId }
     });
+  }
+
+  public async verifyUser(dto: LoginUserDto, salt: string): Promise<DocumentType<UserEntity> | null> {
+    const user = await this.findByEmail(dto.email);
+
+    if (user && user.verifyPassword(dto.password, salt)) {
+      return user;
+    }
+
+    return null;
   }
 }

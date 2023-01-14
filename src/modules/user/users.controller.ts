@@ -16,6 +16,9 @@ import LoginUserDto from './dto/login-user.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-object-id.middleware.js';
 import { UploadFileMiddleware } from '../../common/middlewares/upload-file.middleware.js';
+import LoggedUserResponse from './response/logged-user.response.js';
+import { createJWT } from '../../utils/crypto.js';
+import { JWT_ALGORITHM } from './user.constant.js';
 
 @injectable()
 export default class UsersController extends Controller {
@@ -55,6 +58,11 @@ export default class UsersController extends Controller {
         new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'), 'avatar'),
       ],
     });
+    this.addRoute<UserRoute>({
+      path: UserRoute.LOGIN,
+      method: HttpMethod.Get,
+      handler: this.checkAuthenticate
+    });
   }
 
   async create({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateUserDto>, res: Response): Promise<void> {
@@ -68,14 +76,23 @@ export default class UsersController extends Controller {
     this.created(res, fillDTO(UserResponse, result));
   }
 
-  async login({body}: Request<Record<string, unknown>, Record<string, unknown>, LoginUserDto>): Promise<void> {
-    const existsUser = await this.userService.findByEmail(body.email);
+  async login(
+    {body}: Request<Record<string, unknown>, Record<string, unknown>, LoginUserDto>,
+    res: Response
+  ): Promise<void> {
+    const user = await this.userService.verifyUser(body, this.config.get('SALT'));
 
-    if (!existsUser) {
-      throw new HttpError(StatusCodes.FORBIDDEN, 'Incorrect login or password', 'UserController');
+    if (!user) {
+      throw new HttpError(StatusCodes.FORBIDDEN, 'Unauthorized', 'UserController');
     }
 
-    throw new HttpError(StatusCodes.NOT_IMPLEMENTED, 'Not implemented', 'UserController');
+    const token = await createJWT(
+      JWT_ALGORITHM,
+      this.config.get('JWT_SECRET'),
+      { email: user.email, id: user.id}
+    );
+
+    this.ok(res, fillDTO(LoggedUserResponse, {email: user.email, token}));
   }
 
   async show(): Promise<void> {
@@ -90,5 +107,11 @@ export default class UsersController extends Controller {
     this.created(res, {
       filepath: req.file?.path
     });
+  }
+
+  async checkAuthenticate(req: Request, res: Response) {
+    const user = await this.userService.findByEmail(req.user.email);
+
+    this.ok(res, fillDTO(LoggedUserResponse, user));
   }
 }

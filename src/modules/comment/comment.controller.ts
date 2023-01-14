@@ -13,6 +13,7 @@ import { StatusCodes } from 'http-status-codes';
 import { fillDTO } from '../../utils/common-functions.js';
 import CommentResponse from './response/comment.response.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
+import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
 
 export default class CommentController extends Controller {
   constructor(
@@ -29,17 +30,18 @@ export default class CommentController extends Controller {
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateDtoMiddleware(CreateCommentDto),
       ],
     });
   }
 
-  public async create({body}: Request<object, object, CreateCommentDto>, res: Response): Promise<void> {
+  public async create({body, user}: Request<object, object, CreateCommentDto>, res: Response): Promise<void> {
     if (!await this.movieService.exists(body.movieId)) {
       throw new HttpError(StatusCodes.NOT_FOUND,`Movie with id ${body.movieId} not found.`,'CommentController');
     }
 
-    const comment = await this.commentService.create(body);
+    const comment = await this.commentService.create({...body, userId: user.id});
     await this.movieService.incCommentsCount(body.movieId);
     this.created(res, fillDTO(CommentResponse, comment));
   }
