@@ -58,6 +58,11 @@ export default class UsersController extends Controller {
         new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'), 'avatar'),
       ],
     });
+    this.addRoute<UserRoute>({
+      path: UserRoute.LOGIN,
+      method: HttpMethod.Get,
+      handler: this.checkAuthenticate
+    });
   }
 
   async create({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateUserDto>, res: Response): Promise<void> {
@@ -102,5 +107,11 @@ export default class UsersController extends Controller {
     this.created(res, {
       filepath: req.file?.path
     });
+  }
+
+  async checkAuthenticate(req: Request, res: Response) {
+    const user = await this.userService.findByEmail(req.user.email);
+
+    this.ok(res, fillDTO(LoggedUserResponse, user));
   }
 }
