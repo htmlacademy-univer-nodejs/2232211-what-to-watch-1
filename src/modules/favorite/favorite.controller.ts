@@ -46,18 +46,18 @@ export default class FavoriteController extends Controller {
     });
   }
 
-  async show({body}: Request<Record<string, unknown>, Record<string, unknown>, {userId: string}>, res: Response): Promise<void> {
-    const result = this.userService.findFavorite(body.userId);
+  async show({user}: Request<Record<string, unknown>, Record<string, unknown>>, res: Response): Promise<void> {
+    const result = this.userService.findFavorite(user.id);
     this.ok(res, fillDTO(MovieResponse, result));
   }
 
-  async create({body}: Request<Record<string, unknown>, Record<string, unknown>, {userId: string, movieId: string}>, res: Response): Promise<void> {
-    await this.userService.addFavorite(body.movieId, body.userId);
+  async create({body, user}: Request<Record<string, unknown>, Record<string, unknown>, {movieId: string}>, res: Response): Promise<void> {
+    await this.userService.addFavorite(body.movieId, user.id);
     this.created(res, {message: 'Success. Add movie to favorite\'s list.'});
   }
 
-  async delete({body}: Request<Record<string, unknown>, Record<string, unknown>, {userId: string, movieId: string}>, res: Response): Promise<void> {
-    await this.userService.deleteFavorite(body.movieId, body.userId);
+  async delete({body, user}: Request<Record<string, unknown>, Record<string, unknown>, {movieId: string}>, res: Response): Promise<void> {
+    await this.userService.deleteFavorite(body.movieId, user.id);
     this.noContent(res, {message: 'Success. Delete movie from favorite\'s list.'});
   }
 }
