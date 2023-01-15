@@ -529,13 +529,13 @@ components:
           minimum: 0
           example: 10
 
-        posterLink:
+        posterPath:
           type: string
           format: uri
           pattern: ([^\s]+(\.jpg)$)
           example: movie_poster.jpg
 
-        backgroundImageLink:
+        backgroundImagePath:
           type: string
           format: uri
           pattern: ([^\s]+(\.jpg)$)
@@ -638,13 +638,13 @@ components:
           minimum: 0
           example: 10
 
-        posterLink:
+        posterPath:
           type: string
           format: uri
           pattern: ([^\s]+(\.jpg)$)
           example: movie_poster.jpg
 
-        backgroundImageLink:
+        backgroundImagePath:
           type: string
           format: uri
           pattern: ([^\s]+(\.jpg)$)
@@ -671,8 +671,8 @@ components:
         - durationInMinutes
         - commentsCount
         - user
-        - posterLink
-        - backgroundImageLink
+        - posterPath
+        - backgroundImagePath
         - backgroundColor
 
     updateMovie:
@@ -712,7 +712,7 @@ components:
           format: url
           example: https://example.com
 
-        posterLink:
+        posterPath:
           type: string
           format: uri
           pattern: ([^\s]+(\.jpg)$)
@@ -732,7 +732,7 @@ components:
         - genre
         - moviePreviewLink
         - user
-        - posterLink
+        - posterPath
         - commentsCount
 
 

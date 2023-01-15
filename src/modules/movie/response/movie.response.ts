@@ -39,10 +39,10 @@ export default class MovieResponse {
   public userId!: string;
 
   @Expose()
-  public posterLink!: string;
+  public posterPath!: string;
 
   @Expose()
-  public backgroundImageLink!: string;
+  public backgroundImagePath!: string;
 
   @Expose()
   public backgroundColor!: string;

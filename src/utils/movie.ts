@@ -30,8 +30,8 @@ export const toMovie = (row: string): Movie => {
     durationInMinutes,
     commentsCount,
     user,
-    posterLink,
-    backgroundImageLink,
+    posterPath,
+    backgroundImagePath,
     backgroundColor
   ] = items;
 
@@ -49,8 +49,8 @@ export const toMovie = (row: string): Movie => {
     durationInMinutes: parseInt(durationInMinutes, 10),
     commentsCount: parseInt(commentsCount, 10),
     user: getUser(user),
-    posterLink: posterLink,
-    backgroundImageLink: backgroundImageLink,
+    posterPath: posterPath,
+    backgroundImagePath: backgroundImagePath,
     backgroundColor: backgroundColor
   });
 };

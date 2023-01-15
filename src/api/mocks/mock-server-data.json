@@ -60,21 +60,21 @@
       "n4@test.email",
       "n5@test.email"
     ],
-    "avatarLinks": [
+    "avatarPaths": [
       "avatar1.jpg",
       "avatar2.jpg",
       "avatar3.jpg",
       "avatar4.jpg",
       "avatar5.jpg"
     ],
-    "posterLinks": [
+    "posterPaths": [
       "poster1",
       "poster2",
       "poster3",
       "poster4",
       "poster5"
     ],
-    "backgroundImageLinks": [
+    "backgroundImagePaths": [
       "background1",
       "background2",
       "background3",

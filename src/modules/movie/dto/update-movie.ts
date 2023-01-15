@@ -62,14 +62,14 @@ export default class UpdateMovieDto {
   public userId!: string;
 
   @IsOptional()
-  @Matches(/(\S+(\.jpg)$)/, {message: 'posterLink must be .jpg format image'})
-  @IsString({message: 'posterLink is required'})
-  public posterLink!: string;
+  @Matches(/(\S+(\.jpg)$)/, {message: 'posterPath must be .jpg format image'})
+  @IsString({message: 'posterPath is required'})
+  public posterPath!: string;
 
   @IsOptional()
-  @Matches(/(\S+(\.jpg)$)/, {message: 'backgroundImageLink must be .jpg format image'})
-  @IsString({message: 'backgroundImageLink is required'})
-  public backgroundImageLink!: string;
+  @Matches(/(\S+(\.jpg)$)/, {message: 'backgroundImagePath must be .jpg format image'})
+  @IsString({message: 'backgroundImagePath is required'})
+  public backgroundImagePath!: string;
 
   @IsOptional()
   @IsString({message: 'backgroundColor is required'})

@@ -52,10 +52,10 @@ export class MovieEntity extends defaultClasses.TimeStamps {
   public user: Ref<UserEntity>;
 
   @prop({required: true, match: /(\S+(\.jpg)$)/})
-  public posterLink!: string;
+  public posterPath!: string;
 
   @prop({required: true, match: /(\S+(\.jpg)$)/})
-  public backgroundImageLink!: string;
+  public backgroundImagePath!: string;
 
   @prop({required: true})
   public backgroundColor!: string;
