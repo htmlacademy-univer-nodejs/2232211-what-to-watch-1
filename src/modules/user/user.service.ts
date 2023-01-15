@@ -7,6 +7,7 @@ import CreateUserDto from './dto/create-user.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { MovieEntity } from '../movie/movie.entity';
 import LoginUserDto from './dto/login-user.js';
+import { DEFAULT_AVATAR_FILE_NAME } from './user.constant.js';
 
 @injectable()
 export default class UserService implements IUserService {
@@ -17,7 +18,7 @@ export default class UserService implements IUserService {
   ) {}
 
   public async create(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>> {
-    const user = new UserEntity(dto);
+    const user = new UserEntity({...dto, avatar: DEFAULT_AVATAR_FILE_NAME});
     user.setPassword(dto.password, salt);
 
     const result = await this.userModel.create(user);
