@@ -20,6 +20,8 @@ import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.mid
 import { DocumentExistsMiddleware } from '../../common/middlewares/document-exists.middleware.js';
 import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
 import { IConfig } from '../../common/config/config.interface.js';
+import { getRandomItem } from '../../utils/random.js';
+import { DEFAULT_MOVIE_BACKGROUND_IMAGES, DEFAULT_MOVIE_POSTER_IMAGES } from './movie.constants.js';
 
 type ParamsGetMovie = {
   movieId: string;
@@ -89,8 +91,14 @@ export default class MovieController extends Controller {
   }
 
   async create({body, user}: Request<Record<string, unknown>, Record<string, unknown>, CreateMovieDto>, res: Response): Promise<void> {
-    const result = await this.movieService.create({...body, userId: user.id});
-
+    const randomPosterPath = getRandomItem(DEFAULT_MOVIE_POSTER_IMAGES);
+    const randomBackgroundImagePath = getRandomItem(DEFAULT_MOVIE_BACKGROUND_IMAGES);
+    const result = await this.movieService.create({
+      ...body,
+      posterPath: randomPosterPath,
+      backgroundImagePath: randomBackgroundImagePath,
+      userId: user.id
+    });
     this.created(res, fillDTO(MovieResponse, result));
   }
 
@@ -117,7 +125,13 @@ export default class MovieController extends Controller {
       throw new HttpError(StatusCodes.NOT_FOUND, `Movie with id '${params.movieId}' was not found`, 'MovieController');
     }
 
-    const result = await this.movieService.updateById(params.movieId, body);
+    const randomPosterPath = getRandomItem(DEFAULT_MOVIE_POSTER_IMAGES);
+    const randomBackgroundImagePath = getRandomItem(DEFAULT_MOVIE_BACKGROUND_IMAGES);
+    const result = await this.movieService.updateById(params.movieId, {
+      ...body,
+      posterPath: randomPosterPath,
+      backgroundImagePath: randomBackgroundImagePath
+    });
 
     this.ok(res, fillDTO(MovieResponse, result));
   }
