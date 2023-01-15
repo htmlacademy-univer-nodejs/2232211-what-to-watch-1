@@ -14,14 +14,16 @@ import { fillDTO } from '../../utils/common-functions.js';
 import CommentResponse from './response/comment.response.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
+import { IConfig } from '../../common/config/config.interface.js';
 
 export default class CommentController extends Controller {
   constructor(
     @inject(Component.ILog) log: ILog,
+    @inject(Component.IConfig) config: IConfig,
     @inject(Component.ICommentService) private readonly commentService: ICommentService,
-    @inject(Component.IMovieService) private  readonly movieService: IMovieService,
+    @inject(Component.IMovieService) private readonly movieService: IMovieService,
   ) {
-    super(log);
+    super(log, config);
 
     this.log.info('Register routes for CommentController.');
 

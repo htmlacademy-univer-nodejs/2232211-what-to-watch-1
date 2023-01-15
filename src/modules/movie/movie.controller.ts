@@ -19,6 +19,7 @@ import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-ob
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { DocumentExistsMiddleware } from '../../common/middlewares/document-exists.middleware.js';
 import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
+import { IConfig } from '../../common/config/config.interface.js';
 
 type ParamsGetMovie = {
   movieId: string;
@@ -28,10 +29,11 @@ type ParamsGetMovie = {
 export default class MovieController extends Controller {
   constructor(
     @inject(Component.ILog) log: ILog,
+    @inject(Component.IConfig) config: IConfig,
     @inject(Component.IMovieService) private readonly movieService: IMovieService,
     @inject(Component.ICommentService) private readonly commentService: ICommentService,
   ) {
-    super(log);
+    super(log, config);
 
     this.log.info('Register routes for MovieController.');
 

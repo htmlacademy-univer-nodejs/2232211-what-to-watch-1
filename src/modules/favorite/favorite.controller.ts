@@ -9,14 +9,16 @@ import { fillDTO } from '../../utils/common-functions.js';
 import { IUserService } from '../user/user-service.interface.js';
 import MovieResponse from '../movie/response/movie.response.js';
 import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
+import { IConfig } from '../../common/config/config.interface.js';
 
 @injectable()
 export default class FavoriteController extends Controller {
   constructor(
     @inject(Component.ILog) log: ILog,
+    @inject(Component.IConfig) config: IConfig,
     @inject(Component.IUserService) private readonly userService: IUserService,
   ) {
-    super(log);
+    super(log, config);
 
     this.log.info('Register routes for FavoriteController.');
 

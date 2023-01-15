@@ -5,13 +5,17 @@ import { IRoute } from './route.interface.js';
 import asyncHandler from 'express-async-handler';
 import { StatusCodes } from 'http-status-codes';
 import { injectable } from 'inversify';
+import { IConfig } from '../config/config.interface.js';
 
 
 @injectable()
 export abstract class Controller implements IController {
   private readonly _router: Router;
 
-  constructor(protected readonly log: ILog) {
+  constructor(
+    protected readonly log: ILog,
+    protected readonly config: IConfig
+  ) {
     this._router = Router();
   }
 

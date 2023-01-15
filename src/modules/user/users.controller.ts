@@ -24,10 +24,10 @@ import { JWT_ALGORITHM } from './user.constant.js';
 export default class UsersController extends Controller {
   constructor(
     @inject(Component.ILog) log: ILog,
+    @inject(Component.IConfig) config: IConfig,
     @inject(Component.IUserService) private readonly userService: IUserService,
-    @inject(Component.IConfig) private readonly config: IConfig,
   ) {
-    super(log);
+    super(log, config);
 
     this.log.info('Register routes for UsersController.');
 
