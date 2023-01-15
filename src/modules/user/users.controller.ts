@@ -110,6 +110,14 @@ export default class UsersController extends Controller {
   }
 
   async checkAuthenticate(req: Request, res: Response) {
+    if (!req.user) {
+      throw new HttpError(
+        StatusCodes.UNAUTHORIZED,
+        'Unauthorized',
+        'UsersController'
+      );
+    }
+
     const user = await this.userService.findByEmail(req.user.email);
 
     this.ok(res, fillDTO(LoggedUserResponse, user));
