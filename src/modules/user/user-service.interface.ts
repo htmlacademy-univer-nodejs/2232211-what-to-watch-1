@@ -12,4 +12,6 @@ export interface IUserService {
   addFavorite(movieId: string, userId: string): Promise<void | null>;
   deleteFavorite(movieId: string, userId: string): Promise<void | null>;
   verifyUser(dto: LoginUserDto, salt: string): Promise<DocumentType<UserEntity> | null>;
+  setUserAvatarPath(userId: string, avatarPath: string): Promise<void | null>;
+  findById(userId: string): Promise<DocumentType<UserEntity> | null>;
 }

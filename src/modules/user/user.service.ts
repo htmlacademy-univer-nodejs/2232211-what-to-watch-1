@@ -67,4 +67,12 @@ export default class UserService implements IUserService {
 
     return null;
   }
+
+  async setUserAvatarPath(userId: string, avatarPath: string): Promise<void | null> {
+    return this.userModel.findByIdAndUpdate(userId, {avatarPath});
+  }
+
+  async findById(userId: string): Promise<DocumentType<UserEntity> | null> {
+    return this.userModel.findById(userId);
+  }
 }

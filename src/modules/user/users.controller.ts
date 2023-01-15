@@ -19,6 +19,7 @@ import { UploadFileMiddleware } from '../../common/middlewares/upload-file.middl
 import LoggedUserResponse from './response/logged-user.response.js';
 import { createJWT } from '../../utils/crypto.js';
 import { JWT_ALGORITHM } from './user.constant.js';
+import UploadUserAvatarResponse from './response/upload-user-avatar.response.js';
 
 @injectable()
 export default class UsersController extends Controller {
@@ -103,10 +104,23 @@ export default class UsersController extends Controller {
     throw new HttpError(StatusCodes.NOT_IMPLEMENTED, 'Not implemented', 'UserController');
   }
 
-  async uploadAvatar(req: Request, res: Response) {
-    this.created(res, {
-      filepath: req.file?.path
-    });
+  async uploadAvatar({file, params}: Request, res: Response) {
+    const userId = params.userId;
+    const user = await this.userService.findById(userId);
+
+    if (!user) {
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        `User with id ${userId} doesn't exist`,
+        'UsersController'
+      );
+    }
+
+    if (file) {
+      const avatarPath = file.filename;
+      await this.userService.setUserAvatarPath(userId, avatarPath);
+      this.created(res, fillDTO(UploadUserAvatarResponse, avatarPath));
+    }
   }
 
   async checkAuthenticate(req: Request, res: Response) {
