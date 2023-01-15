@@ -1,6 +1,7 @@
 import typegoose, { defaultClasses, getModelForClass } from '@typegoose/typegoose';
 import { User } from '../../models/user.js';
 import { createSHA256 } from '../../utils/crypto.js';
+import { DEFAULT_AVATAR_FILE_NAME } from './user.constant.js';
 
 const { prop, modelOptions } = typegoose;
 
@@ -17,7 +18,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
 
     this.email = data.email;
     this.nickname = data.nickname;
-    this.avatar = data.avatar;
+    this.avatarPath = data.avatarPath;
   }
 
   @prop({unique: true, required: true})
@@ -26,8 +27,8 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
   @prop({required: true, default: ''})
   public nickname!: string;
 
-  @prop({required: true, default: ''})
-  public avatar!: string;
+  @prop({required: true, default: DEFAULT_AVATAR_FILE_NAME})
+  public avatarPath!: string;
 
   @prop({required: true, default: ''})
   private password!: string;
@@ -40,10 +41,6 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
       throw new Error(`Password length must be from 6 to 12 symbols, but found: ${password.length} symbols`);
     }
     this.password = createSHA256(password, salt);
-  }
-
-  getPassword() {
-    return this.password;
   }
 
   public verifyPassword(password: string, salt: string) {

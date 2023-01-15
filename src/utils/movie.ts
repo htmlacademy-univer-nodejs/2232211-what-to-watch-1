@@ -9,7 +9,7 @@ const getUser = (user: string): User => {
   return {
     nickname: nickname,
     email: email,
-    avatar: avatar
+    avatarPath: avatar
   };
 };
 
