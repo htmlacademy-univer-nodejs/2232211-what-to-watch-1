@@ -13,8 +13,6 @@ export class ValidateDtoMiddleware implements IMiddleware {
     const dtoInstance = plainToInstance(this.dto, body);
     const errors = await validate(dtoInstance);
 
-    // throw new Error(`${JSON.stringify(dtoInstance)}, ${JSON.stringify(this.dto)}, ${JSON.stringify(body)}, ${path}`);
-
     if (errors.length > 0) {
       throw new ValidationError(`Validation error: ${path}`, transformErrors(errors));
     }
