@@ -1,6 +1,6 @@
 import { Controller } from '../../common/controllers/controller.js';
 import { inject, injectable } from 'inversify';
-import { Component } from '../../types/component.js';
+import { COMPONENT } from '../../types/component.js';
 import { LoggerInterface } from '../../common/loggers/logger.interface.js';
 import { UserServiceInterface } from './user-service.interface.js';
 import { ConfigInterface } from '../../common/config/config.interface.js';
@@ -24,9 +24,9 @@ import UploadUserAvatarResponse from './response/upload-user-avatar.response.js'
 @injectable()
 export default class UsersController extends Controller {
   constructor(
-    @inject(Component.LoggerInterface) log: LoggerInterface,
-    @inject(Component.ConfigInterface) config: ConfigInterface,
-    @inject(Component.UserServiceInterface) private readonly userService: UserServiceInterface,
+    @inject(COMPONENT.LoggerInterface) log: LoggerInterface,
+    @inject(COMPONENT.ConfigInterface) config: ConfigInterface,
+    @inject(COMPONENT.UserServiceInterface) private readonly userService: UserServiceInterface,
   ) {
     super(log, config);
 

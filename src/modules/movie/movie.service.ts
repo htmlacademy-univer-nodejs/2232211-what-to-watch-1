@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify';
 import { MovieServiceInterface } from './movie-service.interface.js';
-import { Component } from '../../types/component.js';
+import { COMPONENT } from '../../types/component.js';
 import { LoggerInterface } from '../../common/loggers/logger.interface.js';
 import { types, DocumentType } from '@typegoose/typegoose';
 import { MovieEntity } from './movie.entity.js';
@@ -11,8 +11,8 @@ import UpdateMovieDto from './dto/update-movie.dto.js';
 @injectable()
 export default class MovieService implements MovieServiceInterface {
   constructor(
-    @inject(Component.LoggerInterface) private readonly log: LoggerInterface,
-    @inject(Component.MovieModel) private readonly movieModel: types.ModelType<MovieEntity>
+    @inject(COMPONENT.LoggerInterface) private readonly log: LoggerInterface,
+    @inject(COMPONENT.MovieModel) private readonly movieModel: types.ModelType<MovieEntity>
   ) {}
 
   async create(dto: CreateMovieDto, user: string): Promise<DocumentType<MovieEntity>> {

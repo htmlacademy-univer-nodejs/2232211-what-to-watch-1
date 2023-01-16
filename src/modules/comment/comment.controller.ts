@@ -1,7 +1,7 @@
 import { Controller } from '../../common/controllers/controller.js';
 import { LoggerInterface } from '../../common/loggers/logger.interface.js';
 import { inject } from 'inversify';
-import { Component } from '../../types/component.js';
+import { COMPONENT } from '../../types/component.js';
 import { CommentServiceInterface } from './comment-service.interface.js';
 import { MovieServiceInterface } from '../movie/movie-service.interface.js';
 import { CommentRoute } from './comment.route.js';
@@ -18,10 +18,10 @@ import { ConfigInterface } from '../../common/config/config.interface.js';
 
 export default class CommentController extends Controller {
   constructor(
-    @inject(Component.LoggerInterface) log: LoggerInterface,
-    @inject(Component.ConfigInterface) config: ConfigInterface,
-    @inject(Component.CommentServiceInterface) private readonly commentService: CommentServiceInterface,
-    @inject(Component.MovieServiceInterface) private readonly movieService: MovieServiceInterface,
+    @inject(COMPONENT.LoggerInterface) log: LoggerInterface,
+    @inject(COMPONENT.ConfigInterface) config: ConfigInterface,
+    @inject(COMPONENT.CommentServiceInterface) private readonly commentService: CommentServiceInterface,
+    @inject(COMPONENT.MovieServiceInterface) private readonly movieService: MovieServiceInterface,
   ) {
     super(log, config);
 

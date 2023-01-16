@@ -1,6 +1,6 @@
 import { CommentServiceInterface } from './comment-service.interface.js';
 import { inject, injectable } from 'inversify';
-import { Component } from '../../types/component.js';
+import { COMPONENT } from '../../types/component.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { CommentEntity } from './comment.entity.js';
 import { MovieServiceInterface } from '../movie/movie-service.interface.js';
@@ -10,8 +10,8 @@ import { MAX_COMMENTS_COUNT } from './comment.constant.js';
 @injectable()
 export default class CommentService implements CommentServiceInterface {
   constructor(
-    @inject(Component.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>,
-    @inject(Component.MovieServiceInterface) private readonly movieService: MovieServiceInterface
+    @inject(COMPONENT.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>,
+    @inject(COMPONENT.MovieServiceInterface) private readonly movieService: MovieServiceInterface
   ) {}
 
   public async create(dto: CreateCommentDto, user: string): Promise<DocumentType<CommentEntity>> {

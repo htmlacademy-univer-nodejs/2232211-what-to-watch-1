@@ -1,5 +1,5 @@
 import typegoose, { defaultClasses, Ref, getModelForClass } from '@typegoose/typegoose';
-import { Genre, Genres } from '../../models/genre.js';
+import { Genre, GENRES } from '../../models/genre.js';
 import { UserEntity } from '../user/user.entity.js';
 import { Types } from 'mongoose';
 
@@ -25,7 +25,7 @@ export class MovieEntity extends defaultClasses.TimeStamps {
   @prop({required: true})
   public publicationDate!: Date;
 
-  @prop({type: () => String, required: true, enum: Genres})
+  @prop({type: () => String, required: true, enum: GENRES})
   public genre!: Genre;
 
   @prop({required: true})

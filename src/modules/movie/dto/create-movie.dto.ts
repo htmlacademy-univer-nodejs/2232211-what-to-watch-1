@@ -1,4 +1,4 @@
-import { Genre, Genres } from '../../../models/genre.js';
+import { Genre, GENRES } from '../../../models/genre.js';
 import {
   IsArray,
   IsBoolean,
@@ -25,7 +25,7 @@ export default class CreateMovieDto {
   @IsDateString({}, {message: 'publicationDate must be valid ISO date'})
   public publicationDate!: Date;
 
-  @IsEnum(Genres, {message: `genre must be one of: ${Genres.join(', ')}`})
+  @IsEnum(GENRES, {message: `genre must be one of: ${GENRES.join(', ')}`})
   public genre!: Genre;
 
   @IsInt({message: 'releaseYear must be an integer'})
