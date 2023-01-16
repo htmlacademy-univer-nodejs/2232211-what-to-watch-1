@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { Controller } from '../../common/controllers/controller.js';
-import { COMPONENT } from '../../types/component.js';
+import { Component } from '../../types/component.js';
 import { LoggerInterface } from '../../common/loggers/logger.interface.js';
 import { FavoriteRoute } from './favorite.route.js';
 import { HttpMethod } from '../../common/controllers/http-method.enum.js';
@@ -16,10 +16,10 @@ import { DocumentExistsMiddleware } from '../../common/middlewares/document-exis
 @injectable()
 export default class FavoriteController extends Controller {
   constructor(
-    @inject(COMPONENT.LoggerInterface) log: LoggerInterface,
-    @inject(COMPONENT.ConfigInterface) config: ConfigInterface,
-    @inject(COMPONENT.UserServiceInterface) private readonly userService: UserServiceInterface,
-    @inject(COMPONENT.MovieServiceInterface) private readonly movieService: MovieServiceInterface,
+    @inject(Component.LoggerInterface) log: LoggerInterface,
+    @inject(Component.ConfigInterface) config: ConfigInterface,
+    @inject(Component.UserServiceInterface) private readonly userService: UserServiceInterface,
+    @inject(Component.MovieServiceInterface) private readonly movieService: MovieServiceInterface,
   ) {
     super(log, config);
 

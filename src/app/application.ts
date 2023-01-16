@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { COMPONENT } from '../types/component.js';
+import { Component } from '../types/component.js';
 import { LoggerInterface } from '../common/loggers/logger.interface';
 import { ConfigInterface } from '../common/config/config.interface';
 import { getDBConnectionURIFromConfig } from '../utils/db.js';
@@ -16,15 +16,15 @@ export default class Application {
   private expressApp: Express;
 
   constructor(
-    @inject(COMPONENT.LoggerInterface) private logger: LoggerInterface,
-    @inject(COMPONENT.ConfigInterface) private config: ConfigInterface,
-    @inject(COMPONENT.DatabaseInterface) private dbClient: DatabaseInterface,
-    @inject(COMPONENT.FavoriteController) private favoriteController: IController,
-    @inject(COMPONENT.PromoController) private promoController: IController,
-    @inject(COMPONENT.UsersController) private usersController: IController,
-    @inject(COMPONENT.MovieController) private movieController: IController,
-    @inject(COMPONENT.CommentController) private commentController: IController,
-    @inject(COMPONENT.ExceptionFilterInterface) private exceptionFilter: ExceptionFilterInterface,
+    @inject(Component.LoggerInterface) private logger: LoggerInterface,
+    @inject(Component.ConfigInterface) private config: ConfigInterface,
+    @inject(Component.DatabaseInterface) private dbClient: DatabaseInterface,
+    @inject(Component.FavoriteController) private favoriteController: IController,
+    @inject(Component.PromoController) private promoController: IController,
+    @inject(Component.UsersController) private usersController: IController,
+    @inject(Component.MovieController) private movieController: IController,
+    @inject(Component.CommentController) private commentController: IController,
+    @inject(Component.ExceptionFilterInterface) private exceptionFilter: ExceptionFilterInterface,
   ) {
     this.expressApp = express();
   }

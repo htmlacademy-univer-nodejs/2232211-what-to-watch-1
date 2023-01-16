@@ -5,13 +5,13 @@ import { ExceptionFilterInterface } from './exception-filter.interface.js';
 import HttpError from '../../errors/http-error.js';
 import { createErrorObject } from '../../../utils/common-functions.js';
 import { LoggerInterface } from '../../loggers/logger.interface.js';
-import { COMPONENT } from '../../../types/component.js';
+import { Component } from '../../../types/component.js';
 import { ServiceError } from '../../../types/service-error.enum.js';
 import ValidationError from '../../errors/validation-error.js';
 
 @injectable()
 export default class ExceptionFilter implements ExceptionFilterInterface {
-  constructor(@inject(COMPONENT.LoggerInterface) private log: LoggerInterface) {
+  constructor(@inject(Component.LoggerInterface) private log: LoggerInterface) {
     this.log.info('Register ExceptionFilter');
   }
 

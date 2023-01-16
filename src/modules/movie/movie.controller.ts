@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { Controller } from '../../common/controllers/controller.js';
-import { COMPONENT } from '../../types/component.js';
+import { Component } from '../../types/component.js';
 import { LoggerInterface } from '../../common/loggers/logger.interface.js';
 import { HttpMethod } from '../../common/controllers/http-method.enum.js';
 import { MovieRoute } from './movie.route.js';
@@ -38,10 +38,10 @@ type IndexMoviesQuery = {
 @injectable()
 export default class MovieController extends Controller {
   constructor(
-    @inject(COMPONENT.LoggerInterface) log: LoggerInterface,
-    @inject(COMPONENT.ConfigInterface) config: ConfigInterface,
-    @inject(COMPONENT.MovieServiceInterface) private readonly movieService: MovieServiceInterface,
-    @inject(COMPONENT.CommentServiceInterface) private readonly commentService: CommentServiceInterface,
+    @inject(Component.LoggerInterface) log: LoggerInterface,
+    @inject(Component.ConfigInterface) config: ConfigInterface,
+    @inject(Component.MovieServiceInterface) private readonly movieService: MovieServiceInterface,
+    @inject(Component.CommentServiceInterface) private readonly commentService: CommentServiceInterface,
   ) {
     super(log, config);
 

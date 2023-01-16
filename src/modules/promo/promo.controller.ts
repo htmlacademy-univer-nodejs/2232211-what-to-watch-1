@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { Controller } from '../../common/controllers/controller.js';
-import { COMPONENT } from '../../types/component.js';
+import { Component } from '../../types/component.js';
 import { LoggerInterface } from '../../common/loggers/logger.interface.js';
 import { HttpMethod } from '../../common/controllers/http-method.enum.js';
 import { PromoRoute } from './promo.route.js';
@@ -13,9 +13,9 @@ import { ConfigInterface } from '../../common/config/config.interface.js';
 @injectable()
 export default class PromoController extends Controller {
   constructor(
-    @inject(COMPONENT.LoggerInterface) log: LoggerInterface,
-    @inject(COMPONENT.ConfigInterface) config: ConfigInterface,
-    @inject(COMPONENT.MovieServiceInterface) private readonly movieService: MovieServiceInterface
+    @inject(Component.LoggerInterface) log: LoggerInterface,
+    @inject(Component.ConfigInterface) config: ConfigInterface,
+    @inject(Component.MovieServiceInterface) private readonly movieService: MovieServiceInterface
   ) {
     super(log, config);
 

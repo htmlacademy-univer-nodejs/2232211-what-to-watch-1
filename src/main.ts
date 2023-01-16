@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Container } from 'inversify';
-import { COMPONENT } from './types/component.js';
+import { Component } from './types/component.js';
 import ConfigService from './common/config/config.service.js';
 import Application from './app/application.js';
 import { LoggerInterface } from './common/loggers/logger.interface';
@@ -28,25 +28,25 @@ import ExceptionFilter from './common/filters/exception-filter/exception-filter.
 import CommentController from './modules/comment/comment.controller.js';
 
 const applicationContainer = new Container();
-applicationContainer.bind<Application>(COMPONENT.Application).to(Application).inSingletonScope();
-applicationContainer.bind<LoggerInterface>(COMPONENT.LoggerInterface).to(PinoLogger).inSingletonScope();
-applicationContainer.bind<ConfigInterface>(COMPONENT.ConfigInterface).to(ConfigService).inSingletonScope();
-applicationContainer.bind<DatabaseInterface>(COMPONENT.DatabaseInterface).to(MongoDBService).inSingletonScope();
-applicationContainer.bind<UserServiceInterface>(COMPONENT.UserServiceInterface).to(UserService);
-applicationContainer.bind<MovieServiceInterface>(COMPONENT.MovieServiceInterface).to(MovieService);
-applicationContainer.bind<CommentServiceInterface>(COMPONENT.CommentServiceInterface).to(CommentService);
+applicationContainer.bind<Application>(Component.Application).to(Application).inSingletonScope();
+applicationContainer.bind<LoggerInterface>(Component.LoggerInterface).to(PinoLogger).inSingletonScope();
+applicationContainer.bind<ConfigInterface>(Component.ConfigInterface).to(ConfigService).inSingletonScope();
+applicationContainer.bind<DatabaseInterface>(Component.DatabaseInterface).to(MongoDBService).inSingletonScope();
+applicationContainer.bind<UserServiceInterface>(Component.UserServiceInterface).to(UserService);
+applicationContainer.bind<MovieServiceInterface>(Component.MovieServiceInterface).to(MovieService);
+applicationContainer.bind<CommentServiceInterface>(Component.CommentServiceInterface).to(CommentService);
 
-applicationContainer.bind<types.ModelType<UserEntity>>(COMPONENT.UserModel).toConstantValue(UserModel);
-applicationContainer.bind<types.ModelType<MovieEntity>>(COMPONENT.MovieModel).toConstantValue(MovieModel);
-applicationContainer.bind<types.ModelType<CommentEntity>>(COMPONENT.CommentModel).toConstantValue(CommentModel);
+applicationContainer.bind<types.ModelType<UserEntity>>(Component.UserModel).toConstantValue(UserModel);
+applicationContainer.bind<types.ModelType<MovieEntity>>(Component.MovieModel).toConstantValue(MovieModel);
+applicationContainer.bind<types.ModelType<CommentEntity>>(Component.CommentModel).toConstantValue(CommentModel);
 
-applicationContainer.bind<IController>(COMPONENT.FavoriteController).to(FavoriteController).inSingletonScope();
-applicationContainer.bind<IController>(COMPONENT.PromoController).to(PromoController).inSingletonScope();
-applicationContainer.bind<IController>(COMPONENT.UsersController).to(UsersController).inSingletonScope();
-applicationContainer.bind<IController>(COMPONENT.MovieController).to(MovieController).inSingletonScope();
-applicationContainer.bind<IController>(COMPONENT.CommentController).to(CommentController).inSingletonScope();
+applicationContainer.bind<IController>(Component.FavoriteController).to(FavoriteController).inSingletonScope();
+applicationContainer.bind<IController>(Component.PromoController).to(PromoController).inSingletonScope();
+applicationContainer.bind<IController>(Component.UsersController).to(UsersController).inSingletonScope();
+applicationContainer.bind<IController>(Component.MovieController).to(MovieController).inSingletonScope();
+applicationContainer.bind<IController>(Component.CommentController).to(CommentController).inSingletonScope();
 
-applicationContainer.bind<ExceptionFilterInterface>(COMPONENT.ExceptionFilterInterface).to(ExceptionFilter).inSingletonScope();
+applicationContainer.bind<ExceptionFilterInterface>(Component.ExceptionFilterInterface).to(ExceptionFilter).inSingletonScope();
 
-const application = applicationContainer.get<Application>(COMPONENT.Application);
+const application = applicationContainer.get<Application>(Component.Application);
 await application.init();
