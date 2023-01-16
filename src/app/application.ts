@@ -8,6 +8,7 @@ import express, { Express } from 'express';
 import { IController } from '../common/controllers/controller.interface.js';
 import { IExceptionFilter } from '../common/filters/exception-filter/exception-filter.interface.js';
 import { AuthenticateMiddleware } from '../common/middlewares/authenticate.middleware.js';
+import { getFullServerPath } from '../utils/common-functions.js';
 
 @injectable()
 export default class Application {
@@ -30,6 +31,10 @@ export default class Application {
   initMiddleware() {
     this.expressApp.use(express.json());
     this.expressApp.use('/upload', express.static(this.config.get('UPLOAD_DIRECTORY')));
+    this.expressApp.use(
+      '/static',
+      express.static(this.config.get('STATIC_DIRECTORY_PATH'))
+    );
 
     const authenticateMiddleware = new AuthenticateMiddleware(this.config.get('JWT_SECRET'));
     this.expressApp.use(authenticateMiddleware.execute.bind(authenticateMiddleware));
@@ -59,9 +64,10 @@ export default class Application {
     this.initRoutes();
     this.initExceptionFilters();
 
+    const host = this.config.get('HOST');
     const port = this.config.get('PORT');
     this.expressApp.listen(port, () => {
-      this.logger.info(`Server started on http://localhost:${port}`);
+      this.logger.info(`Server started on ${getFullServerPath(host, port)}`);
     });
   }
 }

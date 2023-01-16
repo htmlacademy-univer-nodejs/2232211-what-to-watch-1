@@ -8,8 +8,8 @@ export type MockData = {
   producers: string[];
   users: string[];
   emails: string[];
-  avatarLinks: string[];
-  posterLinks: string[];
-  backgroundImageLinks: string[];
+  avatarPaths: string[];
+  posterPaths: string[];
+  backgroundImagePaths: string[];
   backgroundColors: string[];
 };

@@ -7,26 +7,28 @@ import { IMovieService } from '../movie/movie-service.interface.js';
 import { CommentRoute } from './comment.route.js';
 import { HttpMethod } from '../../common/controllers/http-method.enum.js';
 import { Request, Response } from 'express';
-import CreateCommentDto from './dto/create-comment.js';
+import CreateCommentDto from './dto/create-comment.dto.js';
 import HttpError from '../../common/errors/http-error.js';
 import { StatusCodes } from 'http-status-codes';
 import { fillDTO } from '../../utils/common-functions.js';
 import CommentResponse from './response/comment.response.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
+import { IConfig } from '../../common/config/config.interface.js';
 
 export default class CommentController extends Controller {
   constructor(
     @inject(Component.ILog) log: ILog,
+    @inject(Component.IConfig) config: IConfig,
     @inject(Component.ICommentService) private readonly commentService: ICommentService,
-    @inject(Component.IMovieService) private  readonly movieService: IMovieService,
+    @inject(Component.IMovieService) private readonly movieService: IMovieService,
   ) {
-    super(log);
+    super(log, config);
 
     this.log.info('Register routes for CommentController.');
 
     this.addRoute<CommentRoute>({
-      path: CommentRoute.ADD_COMMENT,
+      path: CommentRoute.AddComment,
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
@@ -41,8 +43,7 @@ export default class CommentController extends Controller {
       throw new HttpError(StatusCodes.NOT_FOUND,`Movie with id ${body.movieId} not found.`,'CommentController');
     }
 
-    const comment = await this.commentService.create({...body, userId: user.id});
-    await this.movieService.incCommentsCount(body.movieId);
+    const comment = await this.commentService.create(body, user.id);
     this.created(res, fillDTO(CommentResponse, comment));
   }
 }

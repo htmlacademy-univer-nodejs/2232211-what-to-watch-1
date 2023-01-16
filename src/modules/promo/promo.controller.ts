@@ -8,18 +8,20 @@ import { Request, Response } from 'express';
 import { fillDTO } from '../../utils/common-functions.js';
 import MovieResponse from '../movie/response/movie.response.js';
 import { IMovieService } from '../movie/movie-service.interface.js';
+import { IConfig } from '../../common/config/config.interface.js';
 
 @injectable()
 export default class PromoController extends Controller {
   constructor(
     @inject(Component.ILog) log: ILog,
+    @inject(Component.IConfig) config: IConfig,
     @inject(Component.IMovieService) private readonly movieService: IMovieService
   ) {
-    super(log);
+    super(log, config);
 
     this.log.info('Register routes for PromoController.');
 
-    this.addRoute<PromoRoute>({path: PromoRoute.GET_PROMO, method: HttpMethod.Get, handler: this.show});
+    this.addRoute<PromoRoute>({path: PromoRoute.GetPromo, method: HttpMethod.Get, handler: this.show});
   }
 
   async show(_: Request, res: Response): Promise<void> {

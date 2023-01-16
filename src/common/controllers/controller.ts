@@ -5,13 +5,20 @@ import { IRoute } from './route.interface.js';
 import asyncHandler from 'express-async-handler';
 import { StatusCodes } from 'http-status-codes';
 import { injectable } from 'inversify';
+import { IConfig } from '../config/config.interface.js';
+import { UnknownObject } from '../../types/unknown-object.type.js';
+import { getFullServerPath, transformObject } from '../../utils/common-functions.js';
+import { STATIC_RESOURCE_FIELDS } from '../../app/application.constant.js';
 
 
 @injectable()
 export abstract class Controller implements IController {
   private readonly _router: Router;
 
-  constructor(protected readonly log: ILog) {
+  constructor(
+    protected readonly log: ILog,
+    protected readonly config: IConfig
+  ) {
     this._router = Router();
   }
 
@@ -31,7 +38,18 @@ export abstract class Controller implements IController {
     this.log.info(`New route: ${route.method.toUpperCase()}: ${route.path}`);
   }
 
+  protected addStaticPath(data: UnknownObject): void {
+    const fullServerPath = getFullServerPath(this.config.get('HOST'), this.config.get('PORT'));
+    transformObject(
+      STATIC_RESOURCE_FIELDS,
+      `${fullServerPath}/${this.config.get('STATIC_DIRECTORY_PATH')}`,
+      `${fullServerPath}/${this.config.get('UPLOAD_DIRECTORY')}`,
+      data
+    );
+  }
+
   send<T>(res: Response, statusCode: number, data: T): void {
+    this.addStaticPath(data as UnknownObject);
     res.type('application/json')
       .status(statusCode)
       .json(data);

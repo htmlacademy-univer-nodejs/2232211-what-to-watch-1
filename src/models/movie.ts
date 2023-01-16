@@ -15,7 +15,7 @@ export type Movie = {
   durationInMinutes: number;
   commentsCount: number;
   user: User;
-  posterLink: string;
-  backgroundImageLink: string;
+  posterPath: string;
+  backgroundImagePath: string;
   backgroundColor: string;
 }

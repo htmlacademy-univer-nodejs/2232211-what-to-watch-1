@@ -32,11 +32,11 @@ export default class MovieDataGenerator implements IMovieDataGenerator {
     const commentsCount = 0;
     const userName = getRandomItem<string>(this.mockData.users);
     const email = getRandomItem<string>(this.mockData.emails);
-    const avatar = getRandomItem<string>(this.mockData.avatarLinks);
+    const avatar = getRandomItem<string>(this.mockData.avatarPaths);
     const password = randomUUID();
     const user = [userName, email, avatar, password].join(';');
-    const posterLink = getRandomItem<string>(this.mockData.posterLinks);
-    const backgroundImageLink = getRandomItem<string>(this.mockData.backgroundImageLinks);
+    const posterPath = getRandomItem<string>(this.mockData.posterPaths);
+    const backgroundImagePath = getRandomItem<string>(this.mockData.backgroundImagePaths);
     const backgroundColor = getRandomItem<string>(this.mockData.backgroundColors);
 
     return [
@@ -53,8 +53,8 @@ export default class MovieDataGenerator implements IMovieDataGenerator {
       durationInMinutes,
       commentsCount,
       user,
-      posterLink,
-      backgroundImageLink,
+      posterPath,
+      backgroundImagePath,
       backgroundColor
     ].join('\t');
   }

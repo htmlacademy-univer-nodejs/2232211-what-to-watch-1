@@ -1,7 +1,11 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { Genre } from '../../../models/genre.js';
+import UserResponse from '../../user/response/user.response.js';
 
 export default class MovieResponse {
+  @Expose()
+  public id!: string;
+
   @Expose()
   public title!: string;
 
@@ -36,14 +40,18 @@ export default class MovieResponse {
   public durationInMinutes!: number;
 
   @Expose()
-  public userId!: string;
+  @Type(() => UserResponse)
+  public user!: UserResponse;
 
   @Expose()
-  public posterLink!: string;
+  public posterPath!: string;
 
   @Expose()
-  public backgroundImageLink!: string;
+  public backgroundImagePath!: string;
 
   @Expose()
   public backgroundColor!: string;
+
+  @Expose()
+  public commentsCount!: number;
 }
