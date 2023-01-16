@@ -9,6 +9,7 @@ import { IController } from '../common/controllers/controller.interface.js';
 import { IExceptionFilter } from '../common/filters/exception-filter/exception-filter.interface.js';
 import { AuthenticateMiddleware } from '../common/middlewares/authenticate.middleware.js';
 import { getFullServerPath } from '../utils/common-functions.js';
+import cors from 'cors';
 
 @injectable()
 export default class Application {
@@ -38,6 +39,7 @@ export default class Application {
 
     const authenticateMiddleware = new AuthenticateMiddleware(this.config.get('JWT_SECRET'));
     this.expressApp.use(authenticateMiddleware.execute.bind(authenticateMiddleware));
+    this.expressApp.use(cors());
   }
 
   initRoutes() {
