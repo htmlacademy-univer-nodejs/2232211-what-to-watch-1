@@ -4,7 +4,7 @@ import { UserEntity } from './user.entity.js';
 import { MovieEntity } from '../movie/movie.entity.js';
 import LoginUserDto from './dto/login-user.dto.js';
 
-export interface IUserService {
+export interface UserServiceInterface {
   create(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>>;
   obtain(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>>;
   findByEmail(email: string): Promise<DocumentType<UserEntity> | null>;

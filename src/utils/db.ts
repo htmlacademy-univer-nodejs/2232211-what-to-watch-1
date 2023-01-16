@@ -1,4 +1,4 @@
-import { IConfig } from '../common/config/config.interface.js';
+import { ConfigInterface } from '../common/config/config.interface.js';
 
 export interface DBConnectionUriData {
   username: string;
@@ -12,7 +12,7 @@ export function getDBConnectionURI({username, password, host, port, dbName}: DBC
   return `mongodb://${username}:${password}@${host}:${port}/${dbName}?authSource=admin`;
 }
 
-export function getDBConnectionURIFromConfig(config: IConfig) {
+export function getDBConnectionURIFromConfig(config: ConfigInterface) {
   const connectionData = {
     username: config.get('DB_USER'),
     password: config.get('DB_PASSWORD'),

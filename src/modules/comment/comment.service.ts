@@ -1,17 +1,17 @@
-import { ICommentService } from './comment-service.interface.js';
+import { CommentServiceInterface } from './comment-service.interface.js';
 import { inject, injectable } from 'inversify';
 import { Component } from '../../types/component.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { CommentEntity } from './comment.entity.js';
-import { IMovieService } from '../movie/movie-service.interface.js';
+import { MovieServiceInterface } from '../movie/movie-service.interface.js';
 import CreateCommentDto from './dto/create-comment.dto.js';
 import { MAX_COMMENTS_COUNT } from './comment.constant.js';
 
 @injectable()
-export default class CommentService implements ICommentService {
+export default class CommentService implements CommentServiceInterface {
   constructor(
     @inject(Component.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>,
-    @inject(Component.IMovieService) private readonly movieService: IMovieService
+    @inject(Component.MovieServiceInterface) private readonly movieService: MovieServiceInterface
   ) {}
 
   public async create(dto: CreateCommentDto, user: string): Promise<DocumentType<CommentEntity>> {

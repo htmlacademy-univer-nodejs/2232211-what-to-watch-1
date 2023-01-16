@@ -1,12 +1,12 @@
 import { inject, injectable } from 'inversify';
 import { Component } from '../types/component.js';
-import { ILog } from '../common/loggers/logger.interface';
-import { IConfig } from '../common/config/config.interface';
+import { LoggerInterface } from '../common/loggers/logger.interface';
+import { ConfigInterface } from '../common/config/config.interface';
 import { getDBConnectionURIFromConfig } from '../utils/db.js';
-import { IDatabase } from '../common/db-client/database.interface.js';
+import { DatabaseInterface } from '../common/db-client/database.interface.js';
 import express, { Express } from 'express';
 import { IController } from '../common/controllers/controller.interface.js';
-import { IExceptionFilter } from '../common/filters/exception-filter/exception-filter.interface.js';
+import { ExceptionFilterInterface } from '../common/filters/exception-filter/exception-filter.interface.js';
 import { AuthenticateMiddleware } from '../common/middlewares/authenticate.middleware.js';
 import { getFullServerPath } from '../utils/common-functions.js';
 import cors from 'cors';
@@ -16,15 +16,15 @@ export default class Application {
   private expressApp: Express;
 
   constructor(
-    @inject(Component.ILog) private logger: ILog,
-    @inject(Component.IConfig) private config: IConfig,
-    @inject(Component.IDatabase) private dbClient: IDatabase,
+    @inject(Component.LoggerInterface) private logger: LoggerInterface,
+    @inject(Component.ConfigInterface) private config: ConfigInterface,
+    @inject(Component.DatabaseInterface) private dbClient: DatabaseInterface,
     @inject(Component.FavoriteController) private favoriteController: IController,
     @inject(Component.PromoController) private promoController: IController,
     @inject(Component.UsersController) private usersController: IController,
     @inject(Component.MovieController) private movieController: IController,
     @inject(Component.CommentController) private commentController: IController,
-    @inject(Component.IExceptionFilter) private exceptionFilter: IExceptionFilter,
+    @inject(Component.ExceptionFilterInterface) private exceptionFilter: ExceptionFilterInterface,
   ) {
     this.expressApp = express();
   }

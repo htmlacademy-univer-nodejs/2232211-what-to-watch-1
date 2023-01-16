@@ -1,7 +1,7 @@
 import { injectable, inject } from 'inversify';
-import { IMovieService } from './movie-service.interface.js';
+import { MovieServiceInterface } from './movie-service.interface.js';
 import { Component } from '../../types/component.js';
-import { ILog } from '../../common/loggers/logger.interface.js';
+import { LoggerInterface } from '../../common/loggers/logger.interface.js';
 import { types, DocumentType } from '@typegoose/typegoose';
 import { MovieEntity } from './movie.entity.js';
 import CreateMovieDto from './dto/create-movie.dto.js';
@@ -9,9 +9,9 @@ import { MAX_MOVIES_COUNT } from './movie.constants.js';
 import UpdateMovieDto from './dto/update-movie.dto.js';
 
 @injectable()
-export default class MovieService implements IMovieService {
+export default class MovieService implements MovieServiceInterface {
   constructor(
-    @inject(Component.ILog) private readonly log: ILog,
+    @inject(Component.LoggerInterface) private readonly log: LoggerInterface,
     @inject(Component.MovieModel) private readonly movieModel: types.ModelType<MovieEntity>
   ) {}
 

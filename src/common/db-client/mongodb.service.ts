@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 import { inject, injectable } from 'inversify';
-import { IDatabase } from './database.interface.js';
+import { DatabaseInterface } from './database.interface.js';
 import { Component } from '../../types/component.js';
-import { ILog } from '../loggers/logger.interface';
+import { LoggerInterface } from '../loggers/logger.interface';
 
 @injectable()
-export default class MongoDBService implements IDatabase {
+export default class MongoDBService implements DatabaseInterface {
   constructor(
-    @inject(Component.ILog) private log: ILog,
+    @inject(Component.LoggerInterface) private log: LoggerInterface,
   ) {}
 
   public async connect(uri: string): Promise<void> {

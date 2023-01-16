@@ -1,9 +1,9 @@
 import { ICommand } from './command.interface.js';
 import { MovieTsvFileReader } from '../../file-readers/movie-tsv-file-reader.js';
-import { IUserService } from '../../modules/user/user-service.interface.js';
-import { IMovieService } from '../../modules/movie/movie-service.interface.js';
-import { IDatabase } from '../../common/db-client/database.interface.js';
-import { ILog } from '../../common/loggers/logger.interface.js';
+import { UserServiceInterface } from '../../modules/user/user-service.interface.js';
+import { MovieServiceInterface } from '../../modules/movie/movie-service.interface.js';
+import { DatabaseInterface } from '../../common/db-client/database.interface.js';
+import { LoggerInterface } from '../../common/loggers/logger.interface.js';
 import ConsoleLog from '../../common/loggers/logger-console.js';
 import MovieService from '../../modules/movie/movie.service.js';
 import UserService from '../../modules/user/user.service.js';
@@ -13,18 +13,18 @@ import { UserModel } from '../../modules/user/user.entity.js';
 import { getDBConnectionURIFromConfig } from '../../utils/db.js';
 import { Movie } from '../../models/movie.js';
 import { toMovie } from '../../utils/movie.js';
-import { IConfig } from '../../common/config/config.interface.js';
+import { ConfigInterface } from '../../common/config/config.interface.js';
 import ConfigService from '../../common/config/config.service.js';
 
 const DEFAULT_USER_PASSWORD = '123456';
 
 export default class ImportCommand implements ICommand {
   public readonly commandName = '--import';
-  private readonly config!: IConfig;
-  private readonly log: ILog;
-  private userService!: IUserService;
-  private movieService!: IMovieService;
-  private databaseService!: IDatabase;
+  private readonly config!: ConfigInterface;
+  private readonly log: LoggerInterface;
+  private userService!: UserServiceInterface;
+  private movieService!: MovieServiceInterface;
+  private databaseService!: DatabaseInterface;
   private salt!: string;
 
   constructor() {

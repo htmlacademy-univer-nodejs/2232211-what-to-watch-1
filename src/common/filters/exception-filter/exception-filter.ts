@@ -1,17 +1,17 @@
 import {NextFunction, Request, Response} from 'express';
 import { inject, injectable } from 'inversify';
 import { StatusCodes } from 'http-status-codes';
-import { IExceptionFilter } from './exception-filter.interface.js';
+import { ExceptionFilterInterface } from './exception-filter.interface.js';
 import HttpError from '../../errors/http-error.js';
 import { createErrorObject } from '../../../utils/common-functions.js';
-import { ILog } from '../../loggers/logger.interface.js';
+import { LoggerInterface } from '../../loggers/logger.interface.js';
 import { Component } from '../../../types/component.js';
 import { ServiceError } from '../../../types/service-error.enum.js';
 import ValidationError from '../../errors/validation-error.js';
 
 @injectable()
-export default class ExceptionFilter implements IExceptionFilter {
-  constructor(@inject(Component.ILog) private log: ILog) {
+export default class ExceptionFilter implements ExceptionFilterInterface {
+  constructor(@inject(Component.LoggerInterface) private log: LoggerInterface) {
     this.log.info('Register ExceptionFilter');
   }
 

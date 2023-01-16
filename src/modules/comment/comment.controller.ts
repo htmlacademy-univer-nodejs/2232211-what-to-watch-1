@@ -1,9 +1,9 @@
 import { Controller } from '../../common/controllers/controller.js';
-import { ILog } from '../../common/loggers/logger.interface.js';
+import { LoggerInterface } from '../../common/loggers/logger.interface.js';
 import { inject } from 'inversify';
 import { Component } from '../../types/component.js';
-import { ICommentService } from './comment-service.interface.js';
-import { IMovieService } from '../movie/movie-service.interface.js';
+import { CommentServiceInterface } from './comment-service.interface.js';
+import { MovieServiceInterface } from '../movie/movie-service.interface.js';
 import { CommentRoute } from './comment.route.js';
 import { HttpMethod } from '../../common/controllers/http-method.enum.js';
 import { Request, Response } from 'express';
@@ -14,14 +14,14 @@ import { fillDTO } from '../../utils/common-functions.js';
 import CommentResponse from './response/comment.response.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
-import { IConfig } from '../../common/config/config.interface.js';
+import { ConfigInterface } from '../../common/config/config.interface.js';
 
 export default class CommentController extends Controller {
   constructor(
-    @inject(Component.ILog) log: ILog,
-    @inject(Component.IConfig) config: IConfig,
-    @inject(Component.ICommentService) private readonly commentService: ICommentService,
-    @inject(Component.IMovieService) private readonly movieService: IMovieService,
+    @inject(Component.LoggerInterface) log: LoggerInterface,
+    @inject(Component.ConfigInterface) config: ConfigInterface,
+    @inject(Component.CommentServiceInterface) private readonly commentService: CommentServiceInterface,
+    @inject(Component.MovieServiceInterface) private readonly movieService: MovieServiceInterface,
   ) {
     super(log, config);
 
