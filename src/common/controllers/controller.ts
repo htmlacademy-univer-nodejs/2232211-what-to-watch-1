@@ -1,11 +1,11 @@
 import { IController } from './controller.interface.js';
 import { Response, Router } from 'express';
-import { ILog } from '../loggers/logger.interface.js';
+import { LoggerInterface } from '../loggers/logger.interface.js';
 import { IRoute } from './route.interface.js';
 import asyncHandler from 'express-async-handler';
 import { StatusCodes } from 'http-status-codes';
 import { injectable } from 'inversify';
-import { IConfig } from '../config/config.interface.js';
+import { ConfigInterface } from '../config/config.interface.js';
 import { UnknownObject } from '../../types/unknown-object.type.js';
 import { getFullServerPath, transformObject } from '../../utils/common-functions.js';
 import { STATIC_RESOURCE_FIELDS } from '../../app/application.constant.js';
@@ -16,8 +16,8 @@ export abstract class Controller implements IController {
   private readonly _router: Router;
 
   constructor(
-    protected readonly log: ILog,
-    protected readonly config: IConfig
+    protected readonly log: LoggerInterface,
+    protected readonly config: ConfigInterface
   ) {
     this._router = Router();
   }

@@ -1,21 +1,21 @@
 import { inject, injectable } from 'inversify';
 import { Controller } from '../../common/controllers/controller.js';
 import { Component } from '../../types/component.js';
-import { ILog } from '../../common/loggers/logger.interface.js';
+import { LoggerInterface } from '../../common/loggers/logger.interface.js';
 import { HttpMethod } from '../../common/controllers/http-method.enum.js';
 import { PromoRoute } from './promo.route.js';
 import { Request, Response } from 'express';
 import { fillDTO } from '../../utils/common-functions.js';
 import MovieResponse from '../movie/response/movie.response.js';
-import { IMovieService } from '../movie/movie-service.interface.js';
-import { IConfig } from '../../common/config/config.interface.js';
+import { MovieServiceInterface } from '../movie/movie-service.interface.js';
+import { ConfigInterface } from '../../common/config/config.interface.js';
 
 @injectable()
 export default class PromoController extends Controller {
   constructor(
-    @inject(Component.ILog) log: ILog,
-    @inject(Component.IConfig) config: IConfig,
-    @inject(Component.IMovieService) private readonly movieService: IMovieService
+    @inject(Component.LoggerInterface) log: LoggerInterface,
+    @inject(Component.ConfigInterface) config: ConfigInterface,
+    @inject(Component.MovieServiceInterface) private readonly movieService: MovieServiceInterface
   ) {
     super(log, config);
 

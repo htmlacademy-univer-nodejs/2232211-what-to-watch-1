@@ -1,4 +1,4 @@
-export const Genres = [
+export const GENRES = [
   'comedy',
   'crime',
   'documentary',
@@ -10,9 +10,9 @@ export const Genres = [
   'thriller'
 ];
 
-export type Genre = typeof Genres[number];
+export type Genre = typeof GENRES[number];
 
-export const checkGenre = (genre: string): genre is Genre => Genres.indexOf(genre) >= 0;
+export const checkGenre = (genre: string): genre is Genre => GENRES.indexOf(genre) >= 0;
 
 export const toGenre = (genre: string): Genre => {
   if (!checkGenre(genre)) {

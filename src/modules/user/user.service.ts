@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
-import { IUserService } from './user-service.interface.js';
+import { UserServiceInterface } from './user-service.interface.js';
 import { Component } from '../../types/component.js';
-import { ILog } from '../../common/loggers/logger.interface.js';
+import { LoggerInterface } from '../../common/loggers/logger.interface.js';
 import { UserEntity } from './user.entity.js';
 import CreateUserDto from './dto/create-user.dto.js';
 import { DocumentType, types } from '@typegoose/typegoose';
@@ -10,9 +10,9 @@ import LoginUserDto from './dto/login-user.dto.js';
 import { DEFAULT_AVATAR_FILE_NAME } from './user.constant.js';
 
 @injectable()
-export default class UserService implements IUserService {
+export default class UserService implements UserServiceInterface {
   constructor(
-    @inject(Component.ILog) private readonly log: ILog,
+    @inject(Component.LoggerInterface) private readonly log: LoggerInterface,
     @inject(Component.UserModel) private readonly userModel: types.ModelType<UserEntity>,
     @inject(Component.MovieModel) private readonly movieModel: types.ModelType<MovieEntity>,
   ) {}

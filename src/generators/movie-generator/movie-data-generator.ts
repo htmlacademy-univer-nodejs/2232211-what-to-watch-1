@@ -1,7 +1,7 @@
 import { getRandomItem, getRandomItems, getRandomValue} from '../../utils/random.js';
 import dayjs from 'dayjs';
 import { IMovieDataGenerator } from './movie-data-generator.interface.js';
-import { Genres } from '../../models/genre.js';
+import { GENRES } from '../../models/genre.js';
 import { MockData } from '../../models/mock-data.js';
 import { randomUUID } from 'crypto';
 
@@ -21,7 +21,7 @@ export default class MovieDataGenerator implements IMovieDataGenerator {
     const title = getRandomItem<string>(this.mockData.titles);
     const description = getRandomItem<string>(this.mockData.descriptions);
     const publicationDate = dayjs().subtract(getRandomValue(FIRST_WEEK_DAY, LAST_WEEK_DAY), 'day').toISOString();
-    const genre = getRandomItem(Genres);
+    const genre = getRandomItem(GENRES);
     const releaseYear = getRandomValue(MIN_RELEASE_YEAR, MAX_RELEASE_YEAR);
     const rating = getRandomValue(MIN_MOVIE_RATING, MAX_MOVIE_RATING, 2);
     const moviePreviewLink = getRandomItem<string>(this.mockData.moviePreviewLinks);

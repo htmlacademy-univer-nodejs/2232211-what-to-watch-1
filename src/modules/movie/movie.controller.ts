@@ -1,25 +1,25 @@
 import { inject, injectable } from 'inversify';
 import { Controller } from '../../common/controllers/controller.js';
 import { Component } from '../../types/component.js';
-import { ILog } from '../../common/loggers/logger.interface.js';
+import { LoggerInterface } from '../../common/loggers/logger.interface.js';
 import { HttpMethod } from '../../common/controllers/http-method.enum.js';
 import { MovieRoute } from './movie.route.js';
 import { Request, Response } from 'express';
 import { fillDTO } from '../../utils/common-functions.js';
 import MovieResponse from './response/movie.response.js';
 import CreateMovieDto from './dto/create-movie.dto.js';
-import { IMovieService } from './movie-service.interface.js';
+import { MovieServiceInterface } from './movie-service.interface.js';
 import HttpError from '../../common/errors/http-error.js';
 import { StatusCodes } from 'http-status-codes';
 import UpdateMovieDto from './dto/update-movie.dto.js';
-import { ICommentService } from '../comment/comment-service.interface.js';
+import { CommentServiceInterface } from '../comment/comment-service.interface.js';
 import * as staticCore from 'express-serve-static-core';
 import CommentResponse from '../comment/response/comment.response.js';
 import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-object-id.middleware.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { DocumentExistsMiddleware } from '../../common/middlewares/document-exists.middleware.js';
 import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
-import { IConfig } from '../../common/config/config.interface.js';
+import { ConfigInterface } from '../../common/config/config.interface.js';
 import { getRandomItem } from '../../utils/random.js';
 import { DEFAULT_MOVIE_BACKGROUND_IMAGES, DEFAULT_MOVIE_POSTER_IMAGES } from './movie.constants.js';
 import { Genre, toGenre } from '../../models/genre.js';
@@ -38,10 +38,10 @@ type IndexMoviesQuery = {
 @injectable()
 export default class MovieController extends Controller {
   constructor(
-    @inject(Component.ILog) log: ILog,
-    @inject(Component.IConfig) config: IConfig,
-    @inject(Component.IMovieService) private readonly movieService: IMovieService,
-    @inject(Component.ICommentService) private readonly commentService: ICommentService,
+    @inject(Component.LoggerInterface) log: LoggerInterface,
+    @inject(Component.ConfigInterface) config: ConfigInterface,
+    @inject(Component.MovieServiceInterface) private readonly movieService: MovieServiceInterface,
+    @inject(Component.CommentServiceInterface) private readonly commentService: CommentServiceInterface,
   ) {
     super(log, config);
 

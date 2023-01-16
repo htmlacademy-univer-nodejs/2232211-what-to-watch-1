@@ -1,25 +1,25 @@
 import { inject, injectable } from 'inversify';
 import { Controller } from '../../common/controllers/controller.js';
 import { Component } from '../../types/component.js';
-import { ILog } from '../../common/loggers/logger.interface.js';
+import { LoggerInterface } from '../../common/loggers/logger.interface.js';
 import { FavoriteRoute } from './favorite.route.js';
 import { HttpMethod } from '../../common/controllers/http-method.enum.js';
 import { Request, Response } from 'express';
 import { fillDTO } from '../../utils/common-functions.js';
-import { IUserService } from '../user/user-service.interface.js';
+import { UserServiceInterface } from '../user/user-service.interface.js';
 import MovieResponse from '../movie/response/movie.response.js';
 import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
-import { IConfig } from '../../common/config/config.interface.js';
-import { IMovieService } from '../movie/movie-service.interface.js';
+import { ConfigInterface } from '../../common/config/config.interface.js';
+import { MovieServiceInterface } from '../movie/movie-service.interface.js';
 import { DocumentExistsMiddleware } from '../../common/middlewares/document-exists.middleware.js';
 
 @injectable()
 export default class FavoriteController extends Controller {
   constructor(
-    @inject(Component.ILog) log: ILog,
-    @inject(Component.IConfig) config: IConfig,
-    @inject(Component.IUserService) private readonly userService: IUserService,
-    @inject(Component.IMovieService) private readonly movieService: IMovieService,
+    @inject(Component.LoggerInterface) log: LoggerInterface,
+    @inject(Component.ConfigInterface) config: ConfigInterface,
+    @inject(Component.UserServiceInterface) private readonly userService: UserServiceInterface,
+    @inject(Component.MovieServiceInterface) private readonly movieService: MovieServiceInterface,
   ) {
     super(log, config);
 

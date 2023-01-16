@@ -1,6 +1,6 @@
-import { ILog } from './logger.interface.js';
+import { LoggerInterface } from './logger.interface.js';
 
-export default class ConsoleLog implements ILog {
+export default class ConsoleLog implements LoggerInterface {
   public debug(message: string, ...args: unknown[]): void {
     console.debug(message, ...args);
   }

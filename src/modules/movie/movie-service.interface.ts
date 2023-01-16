@@ -4,7 +4,7 @@ import { MovieEntity } from './movie.entity.js';
 import UpdateMovieDto from './dto/update-movie.dto.js';
 import { IDocumentExistsService } from '../../types/document-exists-service.interface.js';
 
-export interface IMovieService extends IDocumentExistsService {
+export interface MovieServiceInterface extends IDocumentExistsService {
   create(dto: CreateMovieDto, userId: string): Promise<DocumentType<MovieEntity>>;
   findById(movieId: string): Promise<DocumentType<MovieEntity> | null>;
   find(limit?: number): Promise<DocumentType<MovieEntity>[]>;

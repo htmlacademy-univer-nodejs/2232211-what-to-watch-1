@@ -1,9 +1,9 @@
-import { ILog } from './logger.interface';
+import { LoggerInterface } from './logger.interface';
 import pino, { Logger } from 'pino';
 import { injectable } from 'inversify';
 
 @injectable()
-export default class PinoLogger implements ILog {
+export default class PinoLogger implements LoggerInterface {
   private readonly logger: Logger;
 
   constructor() {
