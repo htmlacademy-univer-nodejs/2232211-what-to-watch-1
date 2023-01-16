@@ -21,7 +21,7 @@ export default class PromoController extends Controller {
 
     this.log.info('Register routes for PromoController.');
 
-    this.addRoute<PromoRoute>({path: PromoRoute.GET_PROMO, method: HttpMethod.Get, handler: this.show});
+    this.addRoute<PromoRoute>({path: PromoRoute.GetPromo, method: HttpMethod.Get, handler: this.show});
   }
 
   async show(_: Request, res: Response): Promise<void> {

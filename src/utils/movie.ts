@@ -4,10 +4,10 @@ import { toGenre } from '../models/genre.js';
 import { User } from '../models/user.js';
 
 const getUser = (user: string): User => {
-  const [nickname, email, avatar] = user.split(';');
+  const [name, email, avatar] = user.split(';');
 
   return {
-    nickname: nickname,
+    name: name,
     email: email,
     avatarPath: avatar
   };

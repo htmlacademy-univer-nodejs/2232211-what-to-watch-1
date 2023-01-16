@@ -8,9 +8,12 @@ import { transformErrors } from '../../utils/common-functions.js';
 export class ValidateDtoMiddleware implements IMiddleware {
   constructor(private readonly dto: ClassConstructor<object>) {}
 
-  public async execute({body, path}: Request, _res: Response, next: NextFunction): Promise<void> {
+  public async execute(req: Request, _res: Response, next: NextFunction): Promise<void> {
+    const {body, path} = req;
     const dtoInstance = plainToInstance(this.dto, body);
     const errors = await validate(dtoInstance);
+
+    // throw new Error(`${JSON.stringify(dtoInstance)}, ${JSON.stringify(this.dto)}, ${JSON.stringify(body)}, ${path}`);
 
     if (errors.length > 0) {
       throw new ValidationError(`Validation error: ${path}`, transformErrors(errors));

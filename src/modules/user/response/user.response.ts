@@ -2,11 +2,14 @@ import { Expose } from 'class-transformer';
 
 export default class UserResponse {
   @Expose()
+  public id!: string;
+
+  @Expose()
   public email!: string;
 
   @Expose()
-  public avatar!: string;
+  public avatarPath?: string;
 
   @Expose()
-  public nickname!: string;
+  public name!: string;
 }

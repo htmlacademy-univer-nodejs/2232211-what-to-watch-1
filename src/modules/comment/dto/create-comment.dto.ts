@@ -12,6 +12,4 @@ export default class CreateCommentDto {
 
   @IsMongoId({message: 'movieId field must be valid an id'})
   public movieId!: string;
-
-  public userId!: string;
 }

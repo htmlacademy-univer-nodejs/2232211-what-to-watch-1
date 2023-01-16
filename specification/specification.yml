@@ -165,6 +165,33 @@ paths:
         "404":
           description: Movie with that id was not found
 
+  /movies/{movieId}/comments:
+    get:
+      tags:
+        - comments
+      summary: Movie's comments list
+
+      parameters:
+        - in: path
+          name: movieId
+          schema:
+            type: string
+            format: uuid
+          required: true
+
+      responses:
+        "200":
+          description: Movie's comments list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/comment'
+
+        "404":
+          description: Can't find movie with that id
+
   /promo:
     get:
       tags:
@@ -320,33 +347,6 @@ paths:
         "404":
           description: Can't find movie with that id
 
-  /comments/{movieId}:
-    get:
-      tags:
-        - comments
-      summary: Movie's comments list
-
-      parameters:
-        - in: path
-          name: movieId
-          schema:
-            type: string
-            format: uuid
-          required: true
-
-      responses:
-        "200":
-          description: Movie's comments list
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/comment'
-
-        "404":
-          description: Can't find movie with that id
-
   /users:
     post:
       tags:
@@ -361,11 +361,11 @@ paths:
                 - $ref: '#/components/schemas/user'
                 - type: object
                   properties:
-                    nickname:
+                    name:
                       type: string
                       example: Dmitrii
                   required:
-                    - nickname
+                    - name
         required: true
 
       responses:

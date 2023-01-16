@@ -61,10 +61,7 @@ export default class ImportCommand implements ICommand {
       password: DEFAULT_USER_PASSWORD
     }, this.salt);
 
-    await this.movieService.create({
-      ...movie,
-      userId: user.id,
-    });
+    await this.movieService.create(movie, user.id);
   };
 
   private onLine = async (line: string, resolve: () => void) => {

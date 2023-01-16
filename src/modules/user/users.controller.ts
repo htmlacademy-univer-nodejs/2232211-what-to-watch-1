@@ -7,12 +7,12 @@ import { IConfig } from '../../common/config/config.interface.js';
 import { UserRoute } from './user.route.js';
 import { HttpMethod } from '../../common/controllers/http-method.enum.js';
 import { Request, Response } from 'express';
-import CreateUserDto from './dto/create-user.js';
+import CreateUserDto from './dto/create-user.dto.js';
 import HttpError from '../../common/errors/http-error.js';
 import { StatusCodes } from 'http-status-codes';
 import { fillDTO } from '../../utils/common-functions.js';
 import UserResponse from './response/user.response.js';
-import LoginUserDto from './dto/login-user.js';
+import LoginUserDto from './dto/login-user.dto.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-object-id.middleware.js';
 import { UploadFileMiddleware } from '../../common/middlewares/upload-file.middleware.js';
@@ -33,25 +33,28 @@ export default class UsersController extends Controller {
     this.log.info('Register routes for UsersController.');
 
     this.addRoute<UserRoute>({
-      path: UserRoute.ADD_USER,
+      path: UserRoute.AddUser,
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
+        new UploadFileMiddleware(
+          this.config.get('UPLOAD_DIRECTORY'),
+          'avatar'
+        ),
         new ValidateDtoMiddleware(CreateUserDto),
       ]
     });
     this.addRoute<UserRoute>({
-      path: UserRoute.LOGIN,
+      path: UserRoute.Login,
       method: HttpMethod.Post,
       handler: this.login,
       middlewares: [
         new ValidateDtoMiddleware(LoginUserDto),
       ],
     });
-    this.addRoute<UserRoute>({path: UserRoute.GET_USER, method: HttpMethod.Get, handler: this.show});
-    this.addRoute<UserRoute>({path: UserRoute.LOGOUT, method: HttpMethod.Delete, handler: this.logout});
+    this.addRoute<UserRoute>({path: UserRoute.GetUser, method: HttpMethod.Get, handler: this.show});
     this.addRoute<UserRoute>({
-      path: UserRoute.UPLOAD_AVATAR,
+      path: UserRoute.UploadAvatar,
       method: HttpMethod.Post,
       handler: this.uploadAvatar,
       middlewares: [
@@ -59,14 +62,9 @@ export default class UsersController extends Controller {
         new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'), 'avatar'),
       ],
     });
-    this.addRoute<UserRoute>({
-      path: UserRoute.LOGIN,
-      method: HttpMethod.Get,
-      handler: this.checkAuthenticate
-    });
   }
 
-  async create({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateUserDto>, res: Response): Promise<void> {
+  async create({body, file}: Request<Record<string, unknown>, Record<string, unknown>, CreateUserDto>, res: Response): Promise<void> {
     const isUserExists = await this.userService.findByEmail(body.email);
 
     if (isUserExists) {
@@ -74,7 +72,16 @@ export default class UsersController extends Controller {
     }
 
     const result = await this.userService.create(body, this.config.get('SALT'));
-    this.created(res, fillDTO(UserResponse, result));
+
+    const createdUser: UserResponse = result;
+
+    if (file) {
+      const avatarPath = file.filename;
+      await this.userService.setUserAvatarPath(result.id, avatarPath);
+      createdUser.avatarPath = avatarPath;
+    }
+
+    this.created(res, fillDTO(UserResponse, createdUser));
   }
 
   async login(
@@ -96,12 +103,17 @@ export default class UsersController extends Controller {
     this.ok(res, fillDTO(LoggedUserResponse, {email: user.email, token}));
   }
 
-  async show(): Promise<void> {
-    throw new HttpError(StatusCodes.NOT_IMPLEMENTED, 'Not implemented', 'UserController');
-  }
+  async show(req: Request, res: Response): Promise<void> {
+    if (!req.user) {
+      throw new HttpError(
+        StatusCodes.UNAUTHORIZED,
+        'Unauthorized',
+        'UserController'
+      );
+    }
 
-  async logout(): Promise<void> {
-    throw new HttpError(StatusCodes.NOT_IMPLEMENTED, 'Not implemented', 'UserController');
+    const user = await this.userService.findByEmail(req.user.email);
+    this.ok(res, {...fillDTO(LoggedUserResponse, user), token: req.headers.authorization?.split(' ')[1]});
   }
 
   async uploadAvatar({file, params}: Request, res: Response) {
@@ -121,19 +133,5 @@ export default class UsersController extends Controller {
       await this.userService.setUserAvatarPath(userId, avatarPath);
       this.created(res, fillDTO(UploadUserAvatarResponse, avatarPath));
     }
-  }
-
-  async checkAuthenticate(req: Request, res: Response) {
-    if (!req.user) {
-      throw new HttpError(
-        StatusCodes.UNAUTHORIZED,
-        'Unauthorized',
-        'UsersController'
-      );
-    }
-
-    const user = await this.userService.findByEmail(req.user.email);
-
-    this.ok(res, fillDTO(LoggedUserResponse, user));
   }
 }
